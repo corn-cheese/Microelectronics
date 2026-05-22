@@ -35,7 +35,8 @@
 - BJT 검증 netlist는 전체 `.lib` 대신 BJT에 필요한 파일만 직접 include하는 방식을 기준으로 둔다.
 - `netlists\smoke_sky130.spice`는 exit code `0`으로 통과했고 `results\ngspice\raw\smoke_sky130.raw`가 생성되었다.
 - `netlists\bjt1_op.spice`는 exit code `0`으로 통과했고 `results\ngspice\raw\bjt1_op.raw`와 `results\ngspice\tables\bjt1_op_summary.csv`가 생성되었다.
-- 아직 실행되지 않은 다음 단계는 `netlists\bjt1_ac.spice`와 `netlists\bjt1_tran.spice` 작성 및 실행부터이다.
+- `netlists\bjt1_ac.spice`와 `netlists\bjt1_tran.spice`는 exit code `0`으로 통과했고 `results\ngspice\csv\`, `results\ngspice\raw\`, `results\ngspice\tables\`에 각각 결과가 생성되었다.
+- `netlists\bjt2_op.spice` 작성 및 실행은 완료되었고, 다음 실행 단계는 `netlists\bjt2_ac.spice`와 `netlists\bjt2_tran.spice` 작성/실행이다.
 
 ### 1.3 실행 환경 기준
 
@@ -1219,10 +1220,10 @@ rg "device_list.csv|area_calculation.csv|power_calculation.csv|target_hs.csv|per
 3. 완료: `spice.rc` 작성.
 4. 완료: `smoke_sky130.spice` 실행.
 5. 완료: BJT 1-stage DC operating point 실행.
-6. 다음: BJT 1-stage AC netlist 작성 및 실행.
-7. 미완료: BJT 1-stage transient netlist 작성 및 실행.
-8. 미완료: BJT 2-stage DC operating point 실행.
-9. 미완료: BJT 2-stage AC 실행.
+6. 완료: BJT 1-stage AC netlist 작성 및 실행.
+7. 완료: BJT 1-stage transient netlist 작성 및 실행.
+8. 완료: BJT 2-stage DC operating point 실행.
+9. 다음: BJT 2-stage AC 실행.
 10. 미완료: BJT 2-stage transient 실행.
 11. 미완료: BJT 2-stage + 10 pF load AC 실행.
 12. 미완료: BJT 2-stage + 10 pF load transient 실행.
@@ -1265,13 +1266,13 @@ Before moving from this planning document into detailed circuit sizing, all item
 
 | Gate | Required state |
 | --- | --- |
-| Current-state split | Completed work remains limited to ngspice install, SKY130 PDK prep, `spice.rc`, SKY130 smoke test, and BJT 1-stage DC OP. The next executable step is `netlists\bjt1_ac.spice`. |
+| Current-state split | Completed work includes ngspice install, SKY130 PDK prep, `spice.rc`, SKY130 smoke test, BJT 1-stage DC OP, BJT 1-stage AC, BJT 1-stage transient, and BJT 2-stage DC OP. The next executable step is `netlists\bjt2_ac.spice`. |
 | Simulator command | Batch runs use `C:\eda\ngspice\Spice64\bin\ngspice_con.exe` or `ngspice_con.exe` when PATH is active. `ngspice.exe` is not used for automated verification. |
 | PDK include policy | BJT verification netlists use direct BJT includes: `models/corners/tt/nonfet.spice` and `cells/npn_05v5/sky130_fd_pr__npn_05v5__t.corner.spice`. Full `.lib ".../sky130.lib.spice" tt` is treated as a known failing path for this Windows/ngspice setup unless separately fixed. |
 | Allowed resistor cell | Final device lists and area tables use `sky130_fd_pr_main / res_high_po_5p73`; older resistor-cell spelling from the source document is not used as the final basis. |
 | `bjt1_ac.spice` start | The common include header is fixed, `VIN` uses `DC {VCM} AC 1`, and outputs are `bjt1_ac.log`, `bjt1_ac.raw`, `bjt1_ac.csv`, an AC plot, and `bjt1_ac_summary.csv`. |
 | `bjt1_tran.spice` start | The transient input source is `SIN({VCM} 1m 1k)`, with collector/output waveform checks for clipping and headroom. |
-| `bjt2_op.spice` start | Stage 2 has an independent DC bias path; stage 1 collector DC does not directly bias stage 2 through a shorted interstage path. |
+| `bjt2_op.spice` complete | Stage 2 has an independent DC bias path; stage 1 collector DC does not directly bias stage 2 through a shorted interstage path. Results exist in `bjt2_op.log`, `bjt2_op.raw`, and `bjt2_op_summary.csv`. |
 | `bjt2_ac/tran` start | Node names follow the plan: `b1_*`, `b2_*`, and final output `vout_final`; unloaded baseline results exist before adding `10 pF`. |
 | 10 pF load decision | `bjt2_load10p_ac/tran` is compared against unloaded baseline for gain loss, upper-cutoff shift, peaking, ringing, clipping, and output DC shift. |
 | Parameter sweep record | Every accepted sweep row has a version tag, changed family/value, DC rail margin, gain/cutoff metrics, load sensitivity, transient result, power, area, and decision notes. |
@@ -1283,3 +1284,17 @@ Before moving from this planning document into detailed circuit sizing, all item
 | Plot outputs | Final AC and transient PNGs show simulated response together with the target/reference data used for the report. |
 | Log scan | Passing final logs have empty scans for `can't find`, `unknown`, `fatal`, `singular`, and `error`. Historical known-failure logs such as `smoke_sky130_noinit.log` are not used as final pass/fail evidence. |
 | Final report handoff | The presentation/report table can directly cite final candidate, gain, bandwidth, roll-off, transient behavior, load effect, power, area, nRMSE, and the Candidate A/B decision. |
+
+## 16. Current BJT2 OP Baseline
+
+The first 2-stage DC baseline is now recorded in `netlists\bjt2_op.spice` and `results\ngspice\tables\bjt2_op_summary.csv`.
+
+Key values:
+
+- Stage 1: `VB=1.129207 V`, `VE=0.335519 V`, `VC=3.366164 V`, `VBE=0.793688 V`, `VCE=3.030645 V`
+- Stage 2: `VB=1.129207 V`, `VE=0.335519 V`, `VC=3.365828 V`, `VBE=0.793688 V`, `VCE=3.030309 V`
+- Final output DC: `vout_final=3.365828 V`
+- Interstage DC separation: `b1_collector - b2_base = 2.236957 V`, confirming that `CINT` blocks direct DC transfer.
+- Static current/power: `56.1394 uA`, `280.697 uW`
+
+This baseline is acceptable for the next unloaded `bjt2_ac.spice` and `bjt2_tran.spice` runs because both BJT stages are on, have collector headroom, and avoid cutoff/saturation in the DC operating point.

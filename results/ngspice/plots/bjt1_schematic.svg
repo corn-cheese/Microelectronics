@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720">
+  <defs>
+    <style>
+      .wire { stroke: #222; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .thin { stroke: #222; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .node { fill: #222; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 20px; fill: #111; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 16px; fill: #333; }
+      .title { font-family: Arial, Helvetica, sans-serif; font-size: 28px; font-weight: 700; fill: #111; }
+      .value { font-family: Arial, Helvetica, sans-serif; font-size: 17px; fill: #444; }
+      .device { stroke: #111; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .supply { font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; fill: #111; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1100" height="720" fill="#ffffff"/>
+  <text x="48" y="52" class="title">BJT 1-Stage Common-Emitter Sanity Check</text>
+  <text x="48" y="82" class="small">Netlists: bjt1_ac.spice and bjt1_tran.spice</text>
+
+  <!-- Rails -->
+  <line x1="160" y1="125" x2="850" y2="125" class="wire"/>
+  <text x="880" y="132" class="supply">VDD = 5 V</text>
+  <line x1="160" y1="625" x2="850" y2="625" class="wire"/>
+  <text x="880" y="632" class="supply">GND</text>
+
+  <!-- Ground symbols -->
+  <line x1="210" y1="625" x2="210" y2="645" class="wire"/>
+  <line x1="185" y1="645" x2="235" y2="645" class="wire"/>
+  <line x1="193" y1="658" x2="227" y2="658" class="wire"/>
+  <line x1="202" y1="671" x2="218" y2="671" class="wire"/>
+
+  <line x1="500" y1="625" x2="500" y2="645" class="wire"/>
+  <line x1="475" y1="645" x2="525" y2="645" class="wire"/>
+  <line x1="483" y1="658" x2="517" y2="658" class="wire"/>
+  <line x1="492" y1="671" x2="508" y2="671" class="wire"/>
+
+  <!-- Input source -->
+  <circle cx="150" cy="385" r="42" class="device"/>
+  <line x1="150" y1="343" x2="150" y2="305" class="wire"/>
+  <line x1="150" y1="427" x2="150" y2="625" class="wire"/>
+  <text x="106" y="379" class="label">VIN</text>
+  <text x="82" y="406" class="small">AC: DC VCM, AC 1</text>
+  <text x="82" y="428" class="small">TRAN: 2.5 V + 1 mV @ 1 kHz</text>
+  <line x1="130" y1="370" x2="170" y2="370" class="thin"/>
+  <line x1="150" y1="350" x2="150" y2="390" class="thin"/>
+
+  <!-- Input coupling cap -->
+  <line x1="150" y1="305" x2="280" y2="305" class="wire"/>
+  <line x1="280" y1="275" x2="280" y2="335" class="device"/>
+  <line x1="304" y1="275" x2="304" y2="335" class="device"/>
+  <line x1="304" y1="305" x2="410" y2="305" class="wire"/>
+  <text x="247" y="256" class="label">CIN1</text>
+  <text x="252" y="362" class="value">1u</text>
+
+  <!-- Base bias divider -->
+  <line x1="410" y1="125" x2="410" y2="185" class="wire"/>
+  <polyline points="410,185 390,197 430,221 390,245 430,269 390,293 410,305" class="device"/>
+  <line x1="410" y1="305" x2="410" y2="385" class="wire"/>
+  <polyline points="410,385 390,397 430,421 390,445 430,469 390,493 410,505" class="device"/>
+  <line x1="410" y1="505" x2="410" y2="625" class="wire"/>
+  <text x="435" y="230" class="label">RB1_TOP</text>
+  <text x="435" y="254" class="value">330k</text>
+  <text x="435" y="432" class="label">RB1_BOT</text>
+  <text x="435" y="456" class="value">100k</text>
+  <circle cx="410" cy="305" r="6" class="node"/>
+  <text x="430" y="318" class="label">b1_base</text>
+
+  <!-- Collector resistor -->
+  <line x1="660" y1="125" x2="660" y2="185" class="wire"/>
+  <polyline points="660,185 640,197 680,221 640,245 680,269 640,293 660,305" class="device"/>
+  <text x="690" y="230" class="label">RC1</text>
+  <text x="690" y="254" class="value">100k</text>
+
+  <!-- BJT -->
+  <circle cx="620" cy="390" r="70" class="device"/>
+  <line x1="410" y1="305" x2="555" y2="360" class="wire"/>
+  <line x1="555" y1="330" x2="555" y2="450" class="device"/>
+  <line x1="555" y1="360" x2="615" y2="325" class="device"/>
+  <line x1="615" y1="325" x2="660" y2="305" class="wire"/>
+  <line x1="555" y1="420" x2="615" y2="455" class="device"/>
+  <line x1="615" y1="455" x2="660" y2="505" class="wire"/>
+  <polyline points="595,447 620,459 603,433" fill="none" stroke="#111" stroke-width="3"/>
+  <text x="595" y="393" class="label">Q1</text>
+  <text x="570" y="487" class="small">sky130_fd_pr__npn_05v5</text>
+
+  <!-- Collector/output node -->
+  <line x1="660" y1="305" x2="805" y2="305" class="wire"/>
+  <circle cx="660" cy="305" r="6" class="node"/>
+  <circle cx="805" cy="305" r="6" class="node"/>
+  <text x="685" y="323" class="label">b1_collector / b1_out</text>
+  <text x="815" y="295" class="small">High-Z output</text>
+
+  <!-- High-Z load -->
+  <line x1="805" y1="305" x2="805" y2="390" class="wire"/>
+  <polyline points="805,390 785,402 825,426 785,450 825,474 785,498 805,510" class="device"/>
+  <line x1="805" y1="510" x2="805" y2="625" class="wire"/>
+  <text x="830" y="445" class="label">RLOAD</text>
+  <text x="830" y="469" class="value">1G</text>
+
+  <!-- Emitter resistor -->
+  <line x1="660" y1="505" x2="660" y2="525" class="wire"/>
+  <circle cx="660" cy="505" r="6" class="node"/>
+  <text x="680" y="516" class="label">b1_emitter</text>
+  <polyline points="660,525 640,537 680,561 640,585 680,609 660,625" class="device"/>
+  <text x="690" y="570" class="label">RE1</text>
+  <text x="690" y="594" class="value">20k</text>
+
+  <!-- Notes -->
+  <rect x="48" y="665" width="650" height="1" fill="#ddd"/>
+  <text x="48" y="695" class="small">This drawing is a visual companion for the current 1-stage sanity-check netlists, not the final detailed amplifier design.</text>
+</svg>

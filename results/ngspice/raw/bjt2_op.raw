@@ -1,0 +1,66 @@
+Title: * sky130 bjt 2-stage dc operating point sanity check
+Date: Fri May 22 17:28:13  2026
+Command: ngspice-46, Build Mar 29 2026   15:02:07
+Plotname: Operating Point
+Flags: real
+No. Variables: 28
+No. Points: 1
+Variables:
+	0	v(vdd)	voltage
+	1	i(@cint[i])	current
+	2	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	3	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	4	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	5	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	6	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	7	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	8	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	9	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	10	i(@rb1_bot[i])	current
+	11	i(@rb1_top[i])	current
+	12	i(@rb2_bot[i])	current
+	13	i(@rb2_top[i])	current
+	14	i(@rc1[i])	current
+	15	i(@rc2[i])	current
+	16	i(@re1[i])	current
+	17	i(@re2[i])	current
+	18	i(@rload_op[i])	current
+	19	v(b1_base)	voltage
+	20	v(b1_collector)	voltage
+	21	v(b1_emitter)	voltage
+	22	v(b2_base)	voltage
+	23	v(b2_collector)	voltage
+	24	v(b2_emitter)	voltage
+	25	i(vdd)	current
+	26	i(vout_alias)	current
+	27	v(vout_final)	voltage
+Values:
+ 0	5.000000000000000e+00
+	0.000000000000000e+00
+	4.376000235130233e-07
+	1.633836638150079e-05
+	-1.677596976594292e-05
+	3.349343038589622e-12
+	4.376012193146522e-07
+	1.633835687731673e-05
+	-1.677596145722486e-05
+	3.349006921005337e-12
+	1.129207459264879e-05
+	1.172967436586400e-05
+	1.129207367493468e-05
+	1.172967464395919e-05
+	1.633836077760353e-05
+	1.634171710168098e-05
+	1.677595718988898e-05
+	1.677594888182329e-05
+	3.365828289831902e-09
+	1.129207459264879e+00
+	3.366163922239648e+00
+	3.355191437977795e-01
+	1.129207367493468e+00
+	3.365828289831902e+00
+	3.355189776364658e-01
+	-5.613942688910769e-05
+	-3.365828289834309e-09
+	3.365828289831902e+00
+

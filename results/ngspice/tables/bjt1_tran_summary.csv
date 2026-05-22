@@ -1,0 +1,10 @@
+metric,value,unit,notes
+out_max,3.37032,V,Measured from 5 ms to 10 ms
+out_min,3.36135,V,Measured from 5 ms to 10 ms
+out_pp,0.00897,V,Calculated as out_max minus out_min
+vin_max,2.50100,V,Measured from 5 ms to 10 ms
+vin_min,2.49900,V,Measured from 5 ms to 10 ms
+vin_pp,0.00200,V,Calculated as vin_max minus vin_min
+tran_gain_vv,4.485,V/V,Calculated as out_pp divided by vin_pp
+output_center,3.365835,V,Approximate average of out_max and out_min
+log_scan,pass,,No can't find/unknown/fatal/singular/error/failed matches in bjt1_tran.log

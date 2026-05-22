@@ -1,0 +1,18 @@
+metric,value,unit,notes
+vdd,5.000000,V,Supply voltage
+b1_base,1.129207,V,Stage 1 base DC operating point
+b1_emitter,0.335519,V,Stage 1 emitter DC operating point
+b1_collector,3.366164,V,Stage 1 collector DC operating point
+b2_base,1.129207,V,Stage 2 base DC operating point from independent divider
+b2_emitter,0.335519,V,Stage 2 emitter DC operating point
+b2_collector,3.365828,V,Stage 2 collector DC operating point
+vout_final,3.365828,V,Alias of stage 2 collector output node
+vbe1,0.793688,V,b1_base minus b1_emitter
+vce1,3.030645,V,b1_collector minus b1_emitter
+vbe2,0.793688,V,b2_base minus b2_emitter
+vce2,3.030309,V,b2_collector minus b2_emitter
+interstage_dc_delta,2.236957,V,b1_collector minus b2_base; CINT blocks direct DC transfer
+ivdd,-5.61394e-05,A,ngspice current through VDD source
+istatic,5.61394e-05,A,absolute supply current
+pdc,2.80697e-04,W,5 V times istatic
+log_scan,pass,,No can't find/unknown/fatal/singular/error/failed matches in bjt2_op.log

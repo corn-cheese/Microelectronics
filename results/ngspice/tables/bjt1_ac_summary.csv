@@ -1,0 +1,6 @@
+metric,value,unit,notes
+midgain_vv,4.48219,V/V,Measured at 1 kHz from gain_vv
+midgain_db,13.0298,dB,Measured at 1 kHz from gain_db
+phase_1k_deg,-3.13934,deg,Measured at 1 kHz from phase_deg
+frequency_points,301,count,AC sweep from 1 Hz to 1 MHz with 50 points/decade
+log_scan,pass,,No can't find/unknown/fatal/singular/error/failed matches in bjt1_ac.log

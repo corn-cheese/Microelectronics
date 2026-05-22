@@ -1,0 +1,46 @@
+* SKY130 BJT 1-stage transient sanity check
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/models/corners/tt/nonfet.spice"
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/cells/npn_05v5/sky130_fd_pr__npn_05v5__t.corner.spice"
+
+.option savecurrents
+.option klu
+.option reltol=1e-4
+
+.param VDD=5
+.param VCM=2.5
+.param VIN_AMP=1m
+.param FIN=1k
+
+VDD vdd 0 {VDD}
+VIN vin 0 SIN({VCM} {VIN_AMP} {FIN})
+
+* Reuse the verified bjt1_op bias point; drive the base through AC coupling.
+CIN1 vin b1_base 1u
+RB1_TOP vdd b1_base 330k
+RB1_BOT b1_base 0 100k
+RC1 vdd b1_collector 100k
+RE1 b1_emitter 0 20k
+
+* SKY130 npn_05v5 is exposed as a 4-pin subckt: c b e s.
+XQ1 b1_collector b1_base b1_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+
+* Keep the planned output node name available for reports.
+VOUT_ALIAS b1_out b1_collector 0
+RLOAD_TRAN b1_out 0 1G
+
+.control
+set noaskquit
+set wr_singlescale
+set wr_vecnames
+op
+tran 1u 10m 0 1u
+meas tran out_max max v(b1_out) from=5m to=10m
+meas tran out_min min v(b1_out) from=5m to=10m
+meas tran vin_max max v(vin) from=5m to=10m
+meas tran vin_min min v(vin) from=5m to=10m
+wrdata D:/Codex/Support/results/ngspice/csv/bjt1_tran.csv v(vin) v(b1_base) v(b1_emitter) v(b1_collector) v(b1_out)
+write D:/Codex/Support/results/ngspice/raw/bjt1_tran.raw
+quit
+.endc
+
+.end
