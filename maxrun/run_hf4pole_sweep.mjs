@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 
 const root = "D:/Codex/Support";
 const ngspice = "C:/eda/ngspice/Spice64/bin/ngspice_con.exe";
@@ -9,6 +9,8 @@ const rawDir = `${root}/results/ngspice/raw`;
 const logDir = `${root}/results/ngspice/logs`;
 const tableDir = `${root}/results/ngspice/tables`;
 const baselineVersion = "bjt3_sweep_coutalign_c10n";
+const DEFAULT_PARALLEL = 4;
+const RUN_PARALLEL = parseParallelArg(process.argv.slice(2));
 const candidates = [
   { suffix: "10p", value: "10p", numeric: 10e-12 },
   { suffix: "15p", value: "15p", numeric: 15e-12 },
@@ -16,6 +18,18 @@ const candidates = [
   { suffix: "33p", value: "33p", numeric: 33e-12 },
   { suffix: "47p", value: "47p", numeric: 47e-12 },
 ];
+
+function parseParallelArg(args) {
+  const index = args.findIndex((arg) => arg === "--parallel" || arg.startsWith("--parallel="));
+  if (index === -1) return DEFAULT_PARALLEL;
+
+  const raw = args[index].includes("=") ? args[index].split("=")[1] : args[index + 1];
+  const parsed = Number(raw);
+  if (!Number.isInteger(parsed) || parsed < 1) {
+    throw new Error(`--parallel must be a positive integer, got: ${raw}`);
+  }
+  return parsed;
+}
 
 function fmt(n, digits = 8) {
   if (!Number.isFinite(n)) return "";
@@ -206,12 +220,27 @@ quit
 function runNgspice(stem) {
   const logPath = `${logDir}/${stem}.log`;
   const netlistPath = `${netlistDir}/${stem}.spice`;
-  const run = spawnSync(ngspice, ["-b", "-o", logPath, netlistPath], {
-    cwd: root,
-    encoding: "utf8",
+
+  return new Promise((resolve, reject) => {
+    const run = spawn(ngspice, ["-b", "-o", logPath, netlistPath], {
+      cwd: root,
+      stdio: "ignore",
+    });
+
+    run.on("error", reject);
+    run.on("close", (code) => resolve(code ?? 1));
   });
-  if (run.error) throw run.error;
-  return run.status ?? 1;
+}
+
+async function runPool(items, limit, worker) {
+  const queue = [...items];
+  const workers = Array.from({ length: Math.min(limit, queue.length) }, async () => {
+    while (queue.length) {
+      const item = queue.shift();
+      await worker(item);
+    }
+  });
+  await Promise.all(workers);
 }
 
 async function writeCandidateNetlists(candidate, includeNoise = false) {
@@ -282,14 +311,22 @@ await fs.mkdir(tableDir, { recursive: true });
 
 for (const candidate of candidates) {
   await writeCandidateNetlists(candidate);
+}
+
+const jobs = [];
+for (const candidate of candidates) {
   const version = `bjt3_sweep_hf4pole_chout${candidate.suffix}`;
   for (const kind of ["op", "ac", "tran"]) {
-    const code = runNgspice(`${version}_${kind}`);
-    if (code !== 0) {
-      throw new Error(`${version}_${kind} ngspice exit code ${code}`);
-    }
+    jobs.push(`${version}_${kind}`);
   }
 }
+
+await runPool(jobs, RUN_PARALLEL, async (stem) => {
+  const code = await runNgspice(stem);
+  if (code !== 0) {
+    throw new Error(`${stem} ngspice exit code ${code}`);
+  }
+});
 
 const rows = [];
 for (const candidate of candidates) rows.push(await summarizeCandidate(candidate));
@@ -313,7 +350,7 @@ if (selected) {
   selected.decision = "accepted";
   selected.notes = "log scan pass; selected because it adds a deliberate fourth high-frequency pole, keeps the -3 dB upper cutoff above 20 kHz, preserves 10 pF transient behavior, and improves far high-frequency rolloff toward 80 dB/dec";
   await writeCandidateNetlists(selected.candidate, true);
-  const noiseCode = runNgspice(`${selected.stem}_noise`);
+  const noiseCode = await runNgspice(`${selected.stem}_noise`);
   if (noiseCode !== 0) throw new Error(`${selected.stem}_noise ngspice exit code ${noiseCode}`);
   await addNoiseTotals(selected);
 }

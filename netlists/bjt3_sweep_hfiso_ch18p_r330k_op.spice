@@ -1,0 +1,70 @@
+* SKY130 BJT 3-stage high-frequency CH/RISO sweep op: CH=18p, RISO=330k
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/models/corners/tt/nonfet.spice"
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/cells/npn_05v5/sky130_fd_pr__npn_05v5__t.corner.spice"
+
+.option savecurrents
+.option klu
+.option reltol=1e-4
+
+.param VDD=5
+.param VCM=2.5
+.param CCPL=68n
+.param CH=18p
+.param RCVAL=120k
+.param REVAL=18.5k
+.param COUT=10n
+.param ROUT=10Meg
+
+VDD vdd 0 {VDD}
+VIN vin 0 DC {VCM}
+
+CIN vin b1_base {CCPL}
+
+RB1_TOP vdd b1_base 3.3Meg
+RB1_BOT b1_base 0 1Meg
+RC1 vdd b1_collector {RCVAL}
+RE1 b1_emitter 0 {REVAL}
+XQ1 b1_collector b1_base b1_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+CH1 b1_collector 0 {CH}
+
+C12 b1_collector b2_base {CCPL}
+
+RB2_TOP vdd b2_base 3.3Meg
+RB2_BOT b2_base 0 1Meg
+RC2 vdd b2_collector {RCVAL}
+RE2 b2_emitter 0 {REVAL}
+XQ2 b2_collector b2_base b2_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+CH2 b2_collector 0 {CH}
+
+C23 b2_collector b3_base {CCPL}
+
+RB3_TOP vdd b3_base 3.3Meg
+RB3_BOT b3_base 0 1Meg
+RC3 vdd b3_collector {RCVAL}
+RE3 b3_emitter 0 {REVAL}
+XQ3 b3_collector b3_base b3_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+CH3 b3_collector 0 {CH}
+
+COUT b3_collector vout_drv {COUT}
+ROUT_TOP vdd vout_drv {ROUT}
+ROUT_BOT vout_drv 0 {ROUT}
+RISO vout_drv vout_final 330k
+CLOAD_10P vout_final 0 10p
+
+
+.control
+set noaskquit
+op
+print v(vdd)
+print v(b1_base) v(b1_emitter) v(b1_collector)
+print v(b2_base) v(b2_emitter) v(b2_collector)
+print v(b3_base) v(b3_emitter) v(b3_collector) v(vout_drv) v(vout_final)
+print v(b1_base)-v(b1_emitter) v(b1_collector)-v(b1_emitter)
+print v(b2_base)-v(b2_emitter) v(b2_collector)-v(b2_emitter)
+print v(b3_base)-v(b3_emitter) v(b3_collector)-v(b3_emitter)
+print i(vdd)
+write D:/Codex/Support/Microelectronics/results/ngspice/raw/bjt3_sweep_hfiso_ch18p_r330k_op.raw
+quit
+.endc
+
+.end

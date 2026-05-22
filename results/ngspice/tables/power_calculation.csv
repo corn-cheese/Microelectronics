@@ -1,2 +1,2 @@
 "version","vdd_v","static_current_a","pdc_w","transient_avg_current_a","pavg_w","worst_power_w","notes"
-"bjt3_sweep_coutalign_c10n","5","3.31711e-5","1.658555e-4","3.317246122538e-5","1.658623061269e-4","1.658623061269e-4","worst_power_w=max(pdc_w,pavg_w); transient average uses -i(vdd) from 50 ms to 100 ms after settling"
+"bjt3_sweep_hfbuf_r10k_c150p","5","4.71711e-5","2.358555e-4","4.717246172742e-5","2.358623086371e-4","2.358623086371e-4","worst_power_w=max(pdc_w,pavg_w); transient average uses -i(vdd) from 50 ms to 100 ms after settling"

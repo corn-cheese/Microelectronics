@@ -338,3 +338,175 @@ All project.md content checks passed (12/12).
 - 구현: `goal.md`의 high-frequency rolloff gap을 우선하여 `maxrun/run_hfiso_sweep.mjs`를 추가하고, 현재 final candidate `bjt3_sweep_coutalign_c10n`의 output rebias node를 `vout_drv -- RISO -- vout_final`로 분리한 `bjt3_sweep_hfiso_r68k/r100k/r150k/r220k/r330k/r470k_{op,ac,tran}.spice`를 생성했다. `CLOAD_10P=10p`는 최종 `vout_final`에만 유지했다.
 - 검증: 18개 ngspice 실행은 모두 exit code `0`였고, `Select-String .\results\ngspice\logs\bjt3_sweep_hfiso_r*.log -Pattern "can't find|unknown|fatal|singular|error|failed"` 결과는 비어 있었다. `RISO=220k`가 bandwidth를 유지한 가장 강한 후보로 `midgain=39.531713 dB`, `fL=10.59639 Hz`, `fH=20831.99846 Hz`, `out_pp=0.189549 V`, `output_center=2.499754 V`였지만 high-frequency slope는 `10k-100k=-24.88 dB/dec`, `20k-200k=-42.51 dB/dec`, `100k-1Meg=-73.68 dB/dec`에 그쳤다. `RISO=330k/470k`는 far slope가 더 강하지만 upper cutoff가 각각 `19224.77878 Hz`, `17273.37334 Hz`로 20 kHz 목표 아래라 rejected이다.
 - 개선 결정: output-isolation/load-pole 단독 family는 accepted하지 않는다. 현재 final candidate는 `bjt3_sweep_coutalign_c10n`으로 유지한다. 다음 run은 80 dB/dec high-frequency rolloff가 hard target이면 같은 `high_cutoff_shape` family 안에서 기존 `CH1/CH2/CH3`를 줄여 upper-cutoff headroom을 확보한 뒤 `RISO`를 함께 조정하는 후보를 검증한다.
+
+## 2026-05-22 - workflow Cycle F high_cutoff_shape CH/RISO combined sweep
+
+- 구현: `goal.md`의 high-frequency rolloff gap을 우선하여 `maxrun/run_hfiso_ch_sweep.mjs`를 추가하고, 현재 final candidate `bjt3_sweep_coutalign_c10n`에서 `CH1=CH2=CH3`를 `22p/18p/15p`로 낮춘 뒤 `RISO=330k/470k/680k`를 조합한 `bjt3_sweep_hfiso_ch*_{op,ac,tran}.spice`를 생성했다. 변경 family는 `high_cutoff_shape` 하나로 제한했다.
+- 검증: 27개 ngspice 실행은 모두 exit code `0`였고, `Select-String .\results\ngspice\logs\bjt3_sweep_hfiso_ch*.log -Pattern "can't find|unknown|fatal|singular|error|failed"` 결과는 비어 있었다. 모든 후보는 rejected이다. bandwidth를 유지한 후보 중 가장 강한 far slope는 `CH=22p, RISO=330k`의 `fH=22801.4068 Hz`, `100k-1Meg=-72.43 dB/dec`였고, `CH=18p, RISO=470k`는 `fH=21301.02929 Hz`, `100k-1Meg=-71.03 dB/dec`였다. `RISO=470k/680k` 중 일부는 rolloff가 약간 강해졌지만 upper cutoff가 20 kHz 아래로 떨어졌다.
+- 개선 결정: `CH`를 줄여 headroom을 만든 뒤 `RISO`를 키우는 단순 조합은 80 dB/dec high-frequency target을 만족하지 못한다. 현재 final candidate는 `bjt3_sweep_coutalign_c10n`으로 유지한다. 다음 run은 80 dB/dec가 hard target이면 RISO/load pole 단독이 아니라 별도 출력 low-pass filter section 또는 load buffer/filter fallback을 한 가지 후보로 검증한다.
+
+## 2026-05-22 - workflow Cycle F high_cutoff_shape explicit output low-pass section
+
+- 구현: `goal.md`의 high-frequency rolloff gap을 우선하여 `maxrun/run_hflp_sweep.mjs`를 추가하고, 현재 final candidate `bjt3_sweep_coutalign_c10n`의 output rebias node 뒤에 `RLP` 직렬 저항과 내부 `CLP` shunt capacitor를 둔 명시적 출력 low-pass section 후보를 생성했다. 후보는 `RLP/CLP = 47k/47p, 68k/33p, 68k/47p, 100k/22p, 100k/33p, 150k/15p, 150k/22p`이며, 외부 평가 load `CLOAD_10P=10p`는 final output node에 유지했다.
+- 검증: `node .\maxrun\run_hflp_sweep.mjs --parallel 4`로 OP/AC/transient 21개 ngspice 실행을 완료했고, `Select-String .\results\ngspice\logs\bjt3_sweep_hflp_*.log -Pattern "can't find|unknown|fatal|singular|error|failed"` 결과는 비어 있었다. 모든 후보는 rejected이다. 가장 높은 upper cutoff 후보는 `RLP=150k, CLP=15p`로 `midgain=39.511565 dB`, `fL=10.5797 Hz`, `fH=15457.36378 Hz`, `out_pp=0.189116 V`, `output_center=2.499754 V`, high slopes `10k-100k=-28.30 dB/dec`, `20k-200k=-45.20 dB/dec`, `100k-1Meg=-74.22 dB/dec`였다. 가장 강한 far slope 후보는 `RLP=150k, CLP=22p`의 `100k-1Meg=-74.52 dB/dec`였지만 `fH=13423.77297 Hz`로 bandwidth gate를 통과하지 못했다.
+- 개선 결정: 명시적 passive output low-pass section은 high-frequency rolloff를 일부 개선하지만 20 kHz upper cutoff를 크게 낮추므로 accepted하지 않는다. 현재 final candidate는 `bjt3_sweep_coutalign_c10n`으로 유지한다. 다음 run은 80 dB/dec가 hard target이면 main BJT gain path 뒤에 붙는 load buffer/filter fallback을 한 가지 후보로 검증하거나, hard target이 아니면 final integration review로 진행한다.
+
+## 2026-05-22 - workflow Final Integration Review
+
+- 구현: 새 netlist는 생성하지 않고 final candidate `bjt3_sweep_coutalign_c10n`의 제출 산출물과 문서 연결성을 검토했다.
+- 검증: `rg "bjt3_op|bjt3_ac|bjt3_tran|bjt3_load10p|device_list.csv|area_calculation.csv|power_calculation.csv|target_hs.csv|performance_summary.csv" .\progress.md .\3stage-bjt.md`에서 필수 산출물 참조를 확인했다. `rg` ambiguity scan은 `.\3stage-bjt.md`, `.\progress.md`, `.\change.md`, `.\workflow.md`에서 match가 없었고, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 match가 없었다.
+- 통합 판단: final candidate는 `bjt3_sweep_coutalign_c10n`이며 unloaded baseline, 10 pF loaded result, accepted/rejected sweep 이유, device/area/power/target/performance CSV가 모두 분리되어 있다. 제출용 최종 row는 `midgain=39.53342 dB`, `fL=10.59978 Hz`, `fH=23386.60 Hz`, `out_pp=0.189597 V`, `output_center=2.499753 V`, `worst_power=165.862 uW`, `area_p=264800475.176`, `ac_nrmse=0.160141`, `tran_nrmse=0.024391`이다.
+- 개선 결정: 문서화된 hard gap은 high-frequency rolloff가 목표 `80 dB/dec`에 미달하는 점이다. passive 4th-pole, output isolation, CH/RISO 조합, explicit output low-pass 후보는 모두 rejected로 남겼으므로, 다음 run은 hard target이면 load buffer/filter fallback 한 가지를 검증하고, 아니면 발표자료/제출 패키지 정리로 진행한다.
+
+## 2026-05-22 - workflow Cycle F high_cutoff_shape load-buffer/filter fallback
+
+- 구현: `goal.md`의 high-frequency rolloff hard-gap을 우선하여 `maxrun/run_hfbuf_filter_sweep.mjs`를 추가하고, current BJT-only final candidate `bjt3_sweep_coutalign_c10n`의 output rebias node 뒤에 ideal ahdLib-equivalent OPAMP follower와 2단 RC low-pass filter를 붙인 `bjt3_sweep_hfbuf_*_{op,ac,tran}.spice`를 생성했다. OPAMP는 main gain source가 아니라 load buffer/filter fallback으로만 두었고, PPA 전류 모델은 `OPAMP_FT=2Meg`, `IOPAMP=OPAMP_FT*7e-12`로 잡았다.
+- 검증: `node .\maxrun\run_hfbuf_filter_sweep.mjs --parallel 4`로 12개 OP/AC/transient ngspice 실행을 완료했고, accepted 후보에 대해 noise netlist도 추가 실행했다. `Select-String .\results\ngspice\logs\bjt3_sweep_hfbuf_*.log -Pattern "can't find|unknown|fatal|singular|error|failed"` 결과는 비어 있었다. `R=10k`, `C=150p` 후보는 `midgain=39.540374 dB`, lower cutoff `10.59845 Hz`, upper cutoff `20738.04886 Hz`, `out_pp=0.189751 V`, output center `2.499753 V`, `Istatic=47.1711 uA`, `PDC=235.8555 uW`, target-band input-referred noise `15.01195 uVrms`이다. High-frequency slopes는 `10k-100k=-28.40 dB/dec`, `20k-200k=-48.90 dB/dec`, `100k-1Meg=-87.17 dB/dec`로 far-slope hard-target proxy를 통과했다.
+- 개선 결정: `hfbuf_r10k_c150p`를 load-buffer/filter fallback performance candidate로 accepted한다. 다만 ideal buffer noise는 모델에 포함되지 않았고 OPAMP area/power PPA가 추가되므로, 기존 BJT-only final `bjt3_sweep_coutalign_c10n`을 즉시 대체하지 않고 다음 run에서 Cycle G deliverables를 fallback 기준으로 재생성해 PPA/performance trade-off를 비교한다.
+
+## 2026-05-22 - workflow Cycle G fallback refresh
+
+- 구현: final performance fallback `bjt3_sweep_hfbuf_r10k_c150p` 기준으로 OP/AC/transient/noise netlist를 재실행하고 `device_list.csv`, `area_calculation.csv`, `power_calculation.csv`, `target_hs.csv`, `performance_summary.csv`, AC/transient PNG plot을 갱신했다. 재생성 로직은 `maxrun/regenerate_cycle_g_hfbuf.mjs`에 남겼고, BJT-only 후보와의 PPA 비교는 `results/ngspice/tables/bjt3_final_candidate_comparison.csv`에 추가했다.
+- 검증: OP/AC/tran/noise ngspice 실행은 모두 exit code `0`였고, `Select-String .\results\ngspice\logs\bjt3_sweep_hfbuf_r10k_c150p*.log -Pattern "can't find|unknown|fatal|singular|error|failed"` 결과는 비어 있었다. fallback summary는 `midgain=39.5403745 dB`, lower cutoff `10.598446 Hz`, upper cutoff `20738.048859 Hz`, `out_pp=0.189751 V`, `output_center=2.499753 V`, `worst_power=235.862 uW`, `area_p=265169812.927`, `ac_nrmse=0.105900`, `tran_nrmse=0.029755`이다.
+- 개선 결정: `bjt3_sweep_hfbuf_r10k_c150p`는 100 kHz to 1 MHz far-slope `-87.17 dB/dec`로 high-frequency hard-target proxy를 통과하는 accepted fallback이다. BJT-only `bjt3_sweep_coutalign_c10n` 대비 power는 약 `+70.0 uW`, area는 약 `+369337.75 p` 증가하므로, 다음 run은 final integration review에서 hard-target fallback과 low-power BJT-only reference의 제출 포지션을 명확히 정리한다.
+
+## 2026-05-22 - workflow Final Integration Review fallback
+
+- 구현: 새 netlist는 생성하지 않고 final performance fallback `bjt3_sweep_hfbuf_r10k_c150p`의 제출 산출물, BJT-only comparison row, 문서 연결성, plot 존재 여부를 검토했다.
+- 검증: `rg "bjt3_op|bjt3_ac|bjt3_tran|bjt3_load10p|device_list.csv|area_calculation.csv|power_calculation.csv|target_hs.csv|performance_summary.csv|bjt3_final_candidate_comparison.csv" .\progress.md .\3stage-bjt.md .\goal.md`에서 필수 산출물 참조를 확인했다. ambiguity scan은 `workflow.md`, `3stage-bjt.md`, `progress.md`, `change.md`, `goal.md`에서 match가 없었고, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 match가 없었다. `area_calculation.csv`의 PPA 포함 합계는 `265169812.926822 p`로 `performance_summary.csv`의 `2.651698129268e+8 p`와 반올림 오차 수준에서 일치했고, `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`도 performance row와 일치했다.
+- 통합 판단: hard high-frequency rolloff proxy가 중요하면 `bjt3_sweep_hfbuf_r10k_c150p`를 제출 후보로 사용한다. 이 후보는 10 pF load 기준 `midgain=39.5403745 dB`, `fL=10.598446 Hz`, `fH=20738.048859 Hz`, `out_pp=0.189751 V`, `output_center=2.499753 V`, `worst_power=235.862 uW`, `area_p=265169812.927`, `ac_nrmse=0.105900`, `tran_nrmse=0.029755`, `100k-1Meg=-87.17 dB/dec`이다.
+- 개선 결정: 제출/발표에서는 `bjt3_sweep_hfbuf_r10k_c150p`를 hard-target performance fallback으로 제시하고, `bjt3_sweep_coutalign_c10n`은 약 `70.0 uW` 낮은 power와 약 `369337.75 p` 낮은 area를 갖는 BJT-only low-power reference로 비교한다. 다음 action은 회로 변경이 아니라 발표자료/제출 패키지 정리이다.
+
+## 2026-05-22 - workflow Final Integration Review refresh
+
+- 구현: 새 netlist나 plot을 생성하지 않고 `goal.md`의 next sweep priority에 맞춰 final fallback `bjt3_sweep_hfbuf_r10k_c150p` 산출물의 문서 참조, CSV 일관성, plot 존재 여부를 재검토했다.
+- 검증: 필수 산출물 `rg` 검색은 `goal.md`, `3stage-bjt.md`, `progress.md`에서 참조를 확인했고, ambiguity scan은 match 없음(exit code 1), `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`는 match 없음이었다. `area_calculation.csv` PPA 포함 합계는 `265169812.926822 p`, `performance_summary.csv` area는 `265169812.9268 p`로 반올림 차이만 있었고, `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`는 performance row와 정확히 일치했다. `target_hs.csv`는 481 rows, `device_list.csv`는 13 rows이며 final AC/transient PNG가 존재한다.
+- 통합 판단: 제출 후보는 hard high-frequency proxy 기준 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. 최종 CSV row는 `midgain=39.5403745 dB`, `fL=10.598446 Hz`, `fH=20738.048859 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=235.862 uW`, `area=265169812.927 p`, `decision=accepted_fallback`이다.
+- 개선 결정: 회로 변경은 보류한다. 다음 action은 발표자료/제출 패키지에서 fallback의 ideal OPAMP noise 미모델링과 BJT-only reference 대비 power/area penalty를 명시하는 것이다.
+
+## 2026-05-22 - workflow Final Integration Review submission readiness
+
+- 구현: 새 회로, sweep, plot은 만들지 않고 `goal.md`가 요구한 final fallback 제출 준비 상태만 재검토했다.
+- 검증: 필수 산출물 `rg` 검색에서 `goal.md`, `3stage-bjt.md`, `progress.md`가 `bjt3_sweep_hfbuf_r10k_c150p`, `device_list.csv`, `area_calculation.csv`, `power_calculation.csv`, `target_hs.csv`, `performance_summary.csv`, `bjt3_final_candidate_comparison.csv`를 참조함을 확인했다. ambiguity scan은 match 없음(exit code 1), `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`는 match 없음이었다.
+- 검증: `performance_summary.csv` final row는 `bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446 Hz`, `fH=20738.048859 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다. `area_calculation.csv`의 `ppa_included=true` 합계는 `265169812.926822 p`이고, `power_calculation.csv`의 `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`로 performance row와 일치한다.
+- 검증: `target_hs.csv`는 481 rows, `device_list.csv`는 13 rows이며, final plot `bjt3_sweep_hfbuf_r10k_c150p_ac.png`와 `bjt3_sweep_hfbuf_r10k_c150p_tran.png`가 존재한다. `bjt3_final_candidate_comparison.csv`는 BJT-only `bjt3_sweep_coutalign_c10n`과 fallback `bjt3_sweep_hfbuf_r10k_c150p`를 분리해 비교한다.
+- 통합 판단: 제출 후보는 hard high-frequency proxy용 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. 발표/제출에서는 ideal OPAMP fallback noise 미모델링, BJT-only reference 대비 약 `+70.0 uW` power 및 약 `+369337.75 p` area penalty, 그리고 far high-frequency slope `100k-1Meg=-87.17 dB/dec`를 함께 명시한다.
+- 개선 결정: 회로 변경은 종료하고, 다음 run은 발표자료/제출 패키지 작성으로 넘어간다.
+
+## 2026-05-22 - workflow Final Integration Review package handoff
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`의 next action에 맞춰 final fallback 제출 산출물의 package handoff 상태만 재검토했다.
+- 검증: 필수 산출물 `rg` 검색에서 `goal.md`, `3stage-bjt.md`, `progress.md`가 `bjt3_sweep_hfbuf_r10k_c150p`, `device_list.csv`, `area_calculation.csv`, `power_calculation.csv`, `target_hs.csv`, `performance_summary.csv`, `bjt3_final_candidate_comparison.csv`를 참조함을 확인했다. ambiguity scan은 match 없음(exit code 1)이었고, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 match 없음이었다.
+- 검증: `performance_summary.csv` final row는 `bjt3_sweep_hfbuf_r10k_c150p`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다. `area_calculation.csv`의 PPA 포함 합계는 `265169812.926822 p`이고 performance row와의 차이는 `2.17e-5 p` 반올림 수준이다. `power_calculation.csv`의 `worst_power_w`는 `max(pdc_w=2.358555e-4 W, pavg_w=2.358623086371e-4 W)`와 일치한다.
+- 검증: final plot `results/ngspice/plots/bjt3_sweep_hfbuf_r10k_c150p_ac.png`와 `results/ngspice/plots/bjt3_sweep_hfbuf_r10k_c150p_tran.png`가 존재한다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows이고, `bjt3_final_candidate_comparison.csv`는 BJT-only reference와 fallback candidate 2 rows를 포함한다.
+- 통합 판단: 제출 후보는 hard high-frequency proxy 기준 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. 발표/제출 자료에는 ideal OPAMP fallback noise 미모델링, BJT-only reference 대비 power/area penalty, far high-frequency slope `-87.17 dB/dec`, low-power alternative `bjt3_sweep_coutalign_c10n`을 명확히 분리해 적는다.
+- 개선 결정: 회로 설계 workflow는 완료 상태로 보고, 다음 focused action은 발표자료/제출 패키지 작성이다.
+
+## 2026-05-22 - workflow Final Integration Review final handoff
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`의 next sweep priority에 따라 final fallback 산출물의 최종 handoff 일관성만 재검토했다.
+- 검증: 필수 산출물 `rg` 검색에서 `goal.md`, `3stage-bjt.md`, `progress.md`가 final fallback `bjt3_sweep_hfbuf_r10k_c150p`, BJT-only reference `bjt3_sweep_coutalign_c10n`, Cycle G CSV, comparison CSV를 참조함을 확인했다. ambiguity scan은 match 없음(exit code 1)이었고, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 match 없음이었다.
+- 검증: `performance_summary.csv` final row는 `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다. PPA 포함 area 합계는 `265169812.926822 p`로 performance row와 `2.17e-5 p` 차이이고, worst power 계산값은 `2.358623086371e-4 W`로 일치했다.
+- 검증: `target_hs.csv`는 481 rows, `device_list.csv`는 13 rows, `bjt3_final_candidate_comparison.csv`는 BJT-only reference와 fallback candidate 2 rows를 포함한다. final AC/transient plot `bjt3_sweep_hfbuf_r10k_c150p_ac.png`와 `bjt3_sweep_hfbuf_r10k_c150p_tran.png`가 존재한다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. `bjt3_sweep_coutalign_c10n`은 OPAMP fallback 없이 power/area가 낮은 BJT-only reference로 비교한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이며, ideal OPAMP noise 미모델링과 fallback의 power/area penalty를 명시한다.
+
+## 2026-05-22 - workflow Final Integration Review packaging readiness
+
+- 구현: 새 netlist, sweep, plot은 생성하지 않고 `goal.md`의 final fallback 제출 후보 기준으로 산출물 참조, CSV 일관성, plot 존재 여부, 로그 상태를 재검토했다.
+- 검증: `rg "bjt3_op|bjt3_ac|bjt3_tran|bjt3_load10p|device_list.csv|area_calculation.csv|power_calculation.csv|target_hs.csv|performance_summary.csv|bjt3_final_candidate_comparison.csv|bjt3_sweep_hfbuf_r10k_c150p|bjt3_sweep_coutalign_c10n" .\progress.md .\3stage-bjt.md .\goal.md`에서 필수 참조를 확인했다. ambiguity scan은 match 없음(exit code 1), `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 match 없음이었다.
+- 검증: `performance_summary.csv` final row는 `bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다. `area_calculation.csv` PPA 포함 합계는 `265169812.926822 p`로 performance row와 `2.17e-5 p` 차이이며, `power_calculation.csv`의 worst power는 `max(pdc_w, pavg_w)=2.358623086371e-4 W`로 performance row와 일치했다.
+- 검증: `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 BJT-only reference와 fallback candidate 2 rows를 포함한다. final plot `bjt3_sweep_hfbuf_r10k_c150p_ac.png`와 `bjt3_sweep_hfbuf_r10k_c150p_tran.png`가 존재한다.
+- 통합 판단: 제출 후보는 hard high-frequency proxy 기준 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. `bjt3_sweep_coutalign_c10n`은 낮은 power/area를 갖는 BJT-only reference로 비교한다.
+- 개선 결정: 회로 변경은 종료 상태이다. 다음 focused action은 발표자료/제출 패키지를 작성하며 ideal OPAMP noise 미모델링, 약 `+70.0 uW` power penalty, 약 `+369337.75 p` area penalty, far-slope `-87.17 dB/dec`를 명시하는 것이다.
+
+## 2026-05-22 - workflow Final Integration Review package consistency
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`의 next priority에 따라 final fallback `bjt3_sweep_hfbuf_r10k_c150p`와 BJT-only reference `bjt3_sweep_coutalign_c10n`의 제출 산출물 일관성만 재검토했다.
+- 검증: 필수 산출물 참조 `rg` 검색은 `goal.md`, `3stage-bjt.md`, `progress.md`에서 expected reference를 확인했다. ambiguity scan은 match 없음(exit code 1), `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 match 없음이었다.
+- 검증: final plot 4개(`bjt3_sweep_hfbuf_r10k_c150p_ac/tran.png`, `bjt3_sweep_coutalign_c10n_ac/tran.png`)가 존재했다. `performance_summary.csv` final row는 `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다.
+- 검증: `area_calculation.csv`의 PPA 포함 합계는 `265169812.92682171 p`로 performance row와 `2.17e-5 p` 차이만 있었고, `power_calculation.csv`의 `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`로 performance row와 일치했다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. BJT-only `bjt3_sweep_coutalign_c10n`은 OPAMP fallback 없이 power/area가 낮은 reference로 함께 제시한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이며, ideal OPAMP noise 미모델링, BJT-only 대비 power/area penalty, far high-frequency slope 이점을 명시한다.
+
+## 2026-05-22 - workflow Final Integration Review package closure
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`의 package consistency 요구에 맞춰 final fallback `bjt3_sweep_hfbuf_r10k_c150p`와 BJT-only reference `bjt3_sweep_coutalign_c10n`의 제출 산출물만 재검토했다.
+- 검증: 필수 산출물 참조 `rg` 검색에서 `goal.md`, `3stage-bjt.md`, `progress.md`가 final fallback, BJT-only reference, Cycle G CSV, comparison CSV를 참조함을 확인했다. ambiguity scan은 match 없음(exit code 1), `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 match 없음이었다.
+- 검증: `performance_summary.csv` final row는 `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다. PPA 포함 area 합계는 `265169812.926822 p`이고, `power_calculation.csv`의 `worst_power_w=2.358623086371e-4 W`로 performance row와 일치했다.
+- 검증: final plot 4개(`bjt3_sweep_hfbuf_r10k_c150p_ac/tran.png`, `bjt3_sweep_coutalign_c10n_ac/tran.png`)가 존재했다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. BJT-only `bjt3_sweep_coutalign_c10n`은 낮은 power/area reference로 함께 제시한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이며, ideal OPAMP noise 미모델링, BJT-only 대비 power/area penalty, far high-frequency slope 이점을 명시한다.
+
+## 2026-05-22 - workflow Final Integration Review package final consistency
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`의 next priority에 따라 final fallback `bjt3_sweep_hfbuf_r10k_c150p` 제출 산출물과 BJT-only reference `bjt3_sweep_coutalign_c10n` 비교 상태만 재검토했다.
+- 검증: 필수 산출물 참조 `rg` 검색에서 `goal.md`, `3stage-bjt.md`, `progress.md`가 final fallback, BJT-only reference, Cycle G CSV, comparison CSV를 참조함을 확인했다. ambiguity scan은 `NO_MATCH`였고, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 `NO_MATCH`였다.
+- 검증: `performance_summary.csv` final row는 `version=bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다. PPA 포함 area 합계는 `265169812.926822 p`로 performance row와 `-2.17e-5 p` 차이만 있었고, `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`로 performance row와 일치했다.
+- 검증: `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이며, final plot 4개(`bjt3_sweep_hfbuf_r10k_c150p_ac/tran.png`, `bjt3_sweep_coutalign_c10n_ac/tran.png`)가 존재했다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. BJT-only `bjt3_sweep_coutalign_c10n`은 낮은 power/area reference로 함께 제시한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이며, ideal OPAMP noise 미모델링, BJT-only 대비 power/area penalty, far high-frequency slope 이점을 명시한다.
+
+## 2026-05-22 - workflow Final Integration Review final package check
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`를 기준으로 final fallback `bjt3_sweep_hfbuf_r10k_c150p`와 BJT-only reference `bjt3_sweep_coutalign_c10n`의 제출 패키지 일관성만 재검토했다.
+- 검증: 필수 산출물 참조 `rg` 검색은 `goal.md`, `3stage-bjt.md`, `progress.md`에서 final fallback, BJT-only reference, Cycle G CSV, comparison CSV 참조를 확인했다. ambiguity scan은 `NO_MATCH`, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 `NO_MATCH`였다.
+- 검증: `performance_summary.csv` final row는 `version=bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다.
+- 검증: `area_calculation.csv`의 PPA 포함 합계는 `265169812.926822 p`로 performance row와 `2.17e-5 p` 차이만 있었고, `power_calculation.csv`의 `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`로 일치했다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이며 final plot 4개가 모두 존재했다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. 발표/제출 자료에서는 BJT-only `bjt3_sweep_coutalign_c10n`을 low-power reference로 함께 제시하고, ideal OPAMP noise 미모델링과 power/area penalty를 명시한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이다.
+
+## 2026-05-22 - workflow Final Integration Review package lock
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`의 final integration priority에 따라 `bjt3_sweep_hfbuf_r10k_c150p` 제출 산출물과 `bjt3_sweep_coutalign_c10n` reference 비교 상태만 재검토했다.
+- 검증: 필수 산출물 참조 `rg` 검색은 `goal.md`, `3stage-bjt.md`, `progress.md`에서 expected reference를 확인했다. ambiguity scan은 `NO_MATCH`, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 `NO_MATCH`였다.
+- 검증: final plot 4개가 모두 존재했다. `performance_summary.csv` final row는 `version=bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다.
+- 검증: `area_calculation.csv`의 PPA 포함 합계는 `265169812.926822 p`로 performance row와 `2.17e-5 p` 반올림 차이만 있었고, `power_calculation.csv`의 `worst_power_w=2.358623086371e-4 W`는 performance row와 일치했다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. BJT-only `bjt3_sweep_coutalign_c10n`은 lower-power/lower-area reference로 함께 제시한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이다.
+
+## 2026-05-22 - workflow Final Integration Review package relock
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`를 기준으로 final fallback `bjt3_sweep_hfbuf_r10k_c150p`와 BJT-only reference `bjt3_sweep_coutalign_c10n`의 제출 패키지 일관성만 재검토했다.
+- 검증: 필수 산출물 참조 `rg` 검색은 `goal.md`, `3stage-bjt.md`, `progress.md`에서 expected reference를 확인했다. ambiguity scan은 `NO_MATCH`, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 `NO_MATCH`였다.
+- 검증: `performance_summary.csv` final row는 `version=bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다.
+- 검증: `area_calculation.csv`의 PPA 포함 합계는 `265169812.926822 p`로 performance row와 `2.17e-5 p` 차이였고, `power_calculation.csv`의 `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`로 performance row와 일치했다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이며 final plot 4개가 존재했다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. BJT-only `bjt3_sweep_coutalign_c10n`은 lower-power/lower-area reference로 함께 제시한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이다.
+
+## 2026-05-22 - workflow Final Integration Review package seal
+
+- 구현: 새 netlist, sweep, plot은 생성하지 않고 `goal.md`의 accepted fallback `bjt3_sweep_hfbuf_r10k_c150p` 제출 산출물과 BJT-only reference `bjt3_sweep_coutalign_c10n` 비교 상태만 재검토했다.
+- 검증: `rg "bjt3_op|bjt3_ac|bjt3_tran|bjt3_load10p|device_list.csv|area_calculation.csv|power_calculation.csv|target_hs.csv|performance_summary.csv|bjt3_final_candidate_comparison.csv|bjt3_sweep_hfbuf_r10k_c150p|bjt3_sweep_coutalign_c10n" .\progress.md .\3stage-bjt.md .\goal.md`에서 필수 참조를 확인했다. ambiguity scan은 match 없음(exit code 1), `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`는 match 없음이었다.
+- 검증: 필수 CSV와 final plot 4개가 모두 존재했다. `performance_summary.csv` final row는 `version=bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다.
+- 검증: `area_calculation.csv`의 PPA 포함 합계는 `265169812.926822 p`로 performance row와 `2.17e-5 p` 반올림 차이만 있었고, `power_calculation.csv`의 `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`로 performance row와 일치했다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. `bjt3_sweep_coutalign_c10n`은 낮은 power/area의 BJT-only reference로 함께 제시한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이다.
+
+## 2026-05-22 - workflow Final Integration Review package handoff lock
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`의 next action을 final integration review 완료 및 발표/제출 패키지 준비로 갱신했다.
+- 검증: 필수 artifact reference `rg` 검색은 expected reference를 확인했고, ambiguity scan은 `NO_MATCH`, bjt3 log scan은 `NO_MATCH`였다. final plot 4개가 존재했다.
+- 검증: `performance_summary.csv` final row는 `version=bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다.
+- 검증: PPA 포함 area 합계는 `265169812.926822 p`, `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`, `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows로 final CSV와 일치했다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 lock하고, BJT-only `bjt3_sweep_coutalign_c10n`은 lower-power/lower-area reference로 함께 제시한다.
+- 개선 결정: 다음 focused action은 회로 변경이 아니라 발표자료/제출 패키지 작성이다.
+
+## 2026-05-22 - workflow Final Integration Review package ready
+
+- 구현: 새 netlist, sweep, plot은 만들지 않고 `goal.md`의 현재 후보 `bjt3_sweep_hfbuf_r10k_c150p`와 BJT-only reference `bjt3_sweep_coutalign_c10n`의 제출 산출물 일관성만 재검토했다.
+- 검증: 필수 reference `rg` 검색은 111개 match와 exit code `0`을 반환했다. ambiguity scan은 `NO_MATCH`, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 `NO_MATCH`였다.
+- 검증: `performance_summary.csv` final row는 `version=bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다.
+- 검증: `area_calculation.csv`의 PPA 포함 합계는 `265169812.92682171 p`로 performance row와 `2.17e-5 p` 차이만 있었고, `power_calculation.csv`의 `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`로 일치했다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이다.
+- 검증: final plot 4개(`bjt3_sweep_hfbuf_r10k_c150p_ac/tran.png`, `bjt3_sweep_coutalign_c10n_ac/tran.png`)가 모두 존재했다.
+- 통합 판단: 제출 후보는 hard high-frequency proxy 기준 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. 발표/제출 자료에는 BJT-only reference `bjt3_sweep_coutalign_c10n`, ideal OPAMP noise 미모델링, power/area penalty, far-slope 이점을 명시한다.
+- 개선 결정: 회로 workflow는 완료 상태이며 다음 focused action은 발표자료/제출 패키지 작성이다.
+
+## 2026-05-22 - workflow Final Integration Review submission handoff
+
+- 구현: 새 netlist, sweep, plot은 생성하지 않고 `goal.md`를 기준으로 final fallback `bjt3_sweep_hfbuf_r10k_c150p`와 BJT-only reference `bjt3_sweep_coutalign_c10n`의 제출 handoff 상태만 재검토했다.
+- 검증: 필수 artifact `rg` 검색은 expected reference를 확인했고, ambiguity scan은 `NO_MATCH`, `Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"`도 `NO_MATCH`였다.
+- 검증: `performance_summary.csv` final row는 `version=bjt3_sweep_hfbuf_r10k_c150p`, `decision=accepted_fallback`, `midband_gain=39.5403745 dB`, `fL=10.598446065316 Hz`, `fH=20738.04885948716 Hz`, `ac_nrmse=0.105900392044`, `tran_nrmse=0.029755172563`, `power=2.358623086371e-4 W`, `area=2.651698129268e+8 p`이다.
+- 검증: PPA 포함 area 합계는 `265169812.926822 p`로 performance row와 `2.17e-5 p` 반올림 차이만 있었고, `worst_power_w=max(pdc_w,pavg_w)=2.358623086371e-4 W`로 일치했다. `device_list.csv`는 13 rows, `target_hs.csv`는 481 rows, `bjt3_final_candidate_comparison.csv`는 2 rows이며 final plot 4개가 존재했다.
+- 통합 판단: hard high-frequency proxy 제출 후보는 `bjt3_sweep_hfbuf_r10k_c150p`로 유지한다. BJT-only `bjt3_sweep_coutalign_c10n`은 lower-power/lower-area reference로 함께 제시한다.
+- 개선 결정: 회로 workflow는 완료 상태이다. 다음 focused action은 발표자료/제출 패키지 작성이며 ideal OPAMP noise 미모델링과 fallback power/area penalty를 명시한다.

@@ -52,6 +52,27 @@ Every run must update `change.md` before the final response. Use this compact fo
 
 Do not duplicate long tables, raw ngspice output, or detailed sweep notes in `change.md`. Put those details in `progress.md`, CSV summaries, or result files.
 
+## Git Checkpoint Rule
+
+Every workflow run must create a git checkpoint before the final response.
+
+Order:
+
+1. Finish the implementation, verification, improvement decision, and `change.md` entry for the current run.
+2. Run `git status --short` and review the changed/untracked files.
+3. Stage the current workflow outputs with `git add -A`.
+4. If there are staged changes, create one commit for this run.
+5. Push the current branch.
+6. In the final response, report the commit hash and whether push succeeded.
+
+Use this commit message format:
+
+```text
+workflow: <cycle or focused action summary>
+```
+
+If there are no staged changes after `git add -A`, do not create an empty commit; report that there was nothing to commit. If `git push` fails because credentials, remote, or network are unavailable, keep the commit locally and report the exact push failure.
+
 ## 0. 역할과 목표
 
 너는 `D:\Codex\Support`에서 실행되는 Codex run이다. 목표는 `3stage-bjt.md` 기반의 SKY130 3-stage NPN BJT common-emitter neural signal amplifier를 구현, 검증, 개선하는 것이다.
@@ -64,6 +85,7 @@ Do not duplicate long tables, raw ngspice output, or detailed sweep notes in `ch
 - 구현, 검증, 개선을 같은 문단에서 섞지 않는다.
 - 통과한 결과만 `progress.md`에 완료로 기록한다.
 - 반복마다 핵심 문제점과 고친점은 `change.md`에 짧게 기록한다.
+- 매 run 마지막에는 Git Checkpoint Rule에 따라 `git add -A`, commit, push를 수행한다.
 - 실패한 결과는 실패 사실, 실패 파일, 다음 수정 후보를 기록한다.
 - 기존 `netlists/`와 `results/` 파일을 삭제하지 않는다.
 - 기존 사용자 변경을 되돌리지 않는다.
@@ -128,6 +150,8 @@ Select-String .\results\ngspice\logs\<name>.log -Pattern "can't find|unknown|fat
 ```
 
 `Warning: Model issue` 형태의 PDK parameter warning은 기존 통과 log에도 존재하므로 단독 실패 사유로 보지 않는다. 위 공통 로그 검증에서 match가 있으면 실패로 기록한다.
+
+긴 sweep은 `codex.cmd exec` 자체를 병렬로 여러 개 띄우지 말고, `maxrun/run_hf4pole_sweep.mjs` 또는 `maxrun/run_hfiso_sweep.mjs` 같은 전용 runner를 사용한다. 이 runner들은 ngspice job을 기본 4개까지 병렬 실행하며, 필요하면 `node .\maxrun\<runner>.mjs --parallel 2`처럼 낮춰서 실행한다. 병렬 job은 고유 netlist/log/csv/raw 파일명만 쓰고, `progress.md`, `change.md`, 통합 summary 문서 갱신은 main workflow가 순차로 수행한다.
 
 ## 2. Context Isolation Rules
 

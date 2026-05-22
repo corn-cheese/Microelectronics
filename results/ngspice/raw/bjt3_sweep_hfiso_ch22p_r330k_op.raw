@@ -1,0 +1,110 @@
+Title: * sky130 bjt 3-stage high-frequency ch/riso sweep op: ch=22p, riso=330k
+Date: Fri May 22 22:49:30  2026
+Command: ngspice-46, Build Mar 29 2026   15:02:07
+Plotname: Operating Point
+Flags: real
+No. Variables: 50
+No. Points: 1
+Variables:
+	0	v(vdd)	voltage
+	1	i(@c12[i])	current
+	2	i(@c23[i])	current
+	3	i(@ch1[i])	current
+	4	i(@ch2[i])	current
+	5	i(@ch3[i])	current
+	6	i(@cin[i])	current
+	7	i(@cload_10p[i])	current
+	8	i(@cout[i])	current
+	9	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	10	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	11	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	12	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	13	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	14	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	15	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	16	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	17	i(@q.xq3.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	18	i(@q.xq3.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	19	i(@q.xq3.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	20	i(@q.xq3.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	21	i(@rb1_bot[i])	current
+	22	i(@rb1_top[i])	current
+	23	i(@rb2_bot[i])	current
+	24	i(@rb2_top[i])	current
+	25	i(@rb3_bot[i])	current
+	26	i(@rb3_top[i])	current
+	27	i(@rc1[i])	current
+	28	i(@rc2[i])	current
+	29	i(@rc3[i])	current
+	30	i(@re1[i])	current
+	31	i(@re2[i])	current
+	32	i(@re3[i])	current
+	33	i(@riso[i])	current
+	34	i(@rout_bot[i])	current
+	35	i(@rout_top[i])	current
+	36	v(b1_base)	voltage
+	37	v(b1_collector)	voltage
+	38	v(b1_emitter)	voltage
+	39	v(b2_base)	voltage
+	40	v(b2_collector)	voltage
+	41	v(b2_emitter)	voltage
+	42	v(b3_base)	voltage
+	43	v(b3_collector)	voltage
+	44	v(b3_emitter)	voltage
+	45	i(vdd)	current
+	46	v(vin)	voltage
+	47	i(vin)	current
+	48	v(vout_drv)	voltage
+	49	v(vout_final)	voltage
+Values:
+ 0	5.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	2.586264642963021e-07
+	9.750768971435674e-06
+	-1.000939926251526e-05
+	3.815819971715588e-12
+	2.586264642964069e-07
+	9.750768971439564e-06
+	-1.000939926251925e-05
+	3.815819971715130e-12
+	2.586264642963659e-07
+	9.750768971438037e-06
+	-1.000939926251768e-05
+	3.815819971715271e-12
+	9.643099511451404e-07
+	1.222936378440867e-06
+	9.643099511452168e-07
+	1.222936378440843e-06
+	9.643099511451859e-07
+	1.222936378440853e-06
+	9.750771428824897e-06
+	9.750771428828694e-06
+	9.750771428827525e-06
+	1.000939402934113e-05
+	1.000939402934466e-05
+	1.000939402934323e-05
+	0.000000000000000e+00
+	2.500000000000001e-07
+	2.499999999999999e-07
+	9.643099511451405e-01
+	3.829907428541012e+00
+	1.851737895428110e-01
+	9.643099511452168e-01
+	3.829907428540557e+00
+	1.851737895428762e-01
+	9.643099511451860e-01
+	3.829907428540697e+00
+	1.851737895428497e-01
+	-3.317112342180367e-05
+	2.500000000000000e+00
+	0.000000000000000e+00
+	2.500000000000001e+00
+	2.500000000000001e+00
+
