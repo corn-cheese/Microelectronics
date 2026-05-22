@@ -1,5 +1,6 @@
 param(
-  [int]$Runs = 1
+  [int]$Runs = 1,
+  [string]$Workflow = "workflow.md"
 )
 
 $ErrorActionPreference = "Stop"
@@ -9,9 +10,14 @@ $OutputEncoding = New-Object System.Text.UTF8Encoding $false
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
-$workflow = Join-Path $root "workflow.md"
-if (-not (Test-Path $workflow)) {
-  throw "Workflow file not found: $workflow"
+$workflowPath = if ([System.IO.Path]::IsPathRooted($Workflow)) {
+  $Workflow
+} else {
+  Join-Path $root $Workflow
+}
+
+if (-not (Test-Path $workflowPath)) {
+  throw "Workflow file not found: $workflowPath"
 }
 
 if (-not (Get-Command codex.cmd -ErrorAction SilentlyContinue)) {
@@ -24,8 +30,8 @@ if ($Runs -lt 1) {
 
 for ($i = 1; $i -le $Runs; $i++) {
   Write-Host ""
-  Write-Host "=== Running workflow.md run $i of $Runs ===" -ForegroundColor Cyan
-  Get-Content -Raw -Encoding UTF8 $workflow | codex.cmd exec --cd $root -
+  Write-Host "=== Running $Workflow run $i of $Runs ===" -ForegroundColor Cyan
+  Get-Content -Raw -Encoding UTF8 $workflowPath | codex.cmd exec --cd $root -
 
   if ($LASTEXITCODE -ne 0) {
     throw "codex.cmd exec failed on run $i with exit code $LASTEXITCODE."

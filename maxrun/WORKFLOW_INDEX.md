@@ -1,7 +1,7 @@
 # Maxrun Workflow Index
 
-This worktree is for the `codex/2stage-bjt-ppa` branch. The active maxrun path
-is the 2BJT PPA sweep, not the old 3BJT planning workflow.
+This worktree started from the `codex/2stage-bjt-ppa` branch. The active
+low-frequency experiment branch is `codex/2stage-bjt-lowfreq-ppa`.
 
 ## Primary Run
 
@@ -15,6 +15,22 @@ That script reads `workflow.md` and passes it to:
 
 ```powershell
 codex.cmd exec --cd <repo-root> -
+```
+
+## Low-Frequency PPA Branch Run
+
+Use this command for the branched low-frequency-shape workflow:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\maxrun\run_workflow_maxrun.ps1 -Workflow .\workflow_lowfreq_ppa.md -Runs 1
+```
+
+Read the branch goal first:
+
+```text
+nextgoal.md
+workflow_lowfreq_ppa.md
+workflow_branch.md
 ```
 
 ## Direct Simulation Run
