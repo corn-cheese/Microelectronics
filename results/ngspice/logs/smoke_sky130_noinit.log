@@ -1,0 +1,8 @@
+Error in line   include "sky130_fd_pr__esd_nfet_05v0_nvt.pm3"
+    Not enough parameters for i source
+    line no. 820 from file C:\eda\sky130\skywater-pdk-libs-sky130_fd_pr\models\.\../cells/nfet_05v0_nvt\.\sky130_fd_pr__nfet_05v0_nvt.pm3.spice
+
+ERROR: fatal error in ngspice, exit(1)
+
+Note: No compatibility mode selected!
+

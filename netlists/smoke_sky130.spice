@@ -1,0 +1,24 @@
+* SKY130 + ngspice smoke test
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/models/corners/tt/nonfet.spice"
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/cells/npn_05v5/sky130_fd_pr__npn_05v5__t.corner.spice"
+
+.option savecurrents
+.option klu
+
+VDD vdd 0 5
+VB  b   0 0.75
+VE  e   0 0
+RC  vdd c 10k
+
+* SKY130 npn_05v5 is exposed as a 4-pin subckt: c b e s.
+XSMOKE c b e 0 sky130_fd_pr__npn_05v5_W1p00L1p00 M=1
+
+.control
+set noaskquit
+op
+print v(vdd) v(c) v(b) v(e)
+write D:/Codex/Support/results/ngspice/raw/smoke_sky130.raw
+quit
+.endc
+
+.end

@@ -1,0 +1,42 @@
+Title: * sky130 bjt 1-stage dc operating point sanity check
+Date: Fri May 22 16:32:12  2026
+Command: ngspice-46, Build Mar 29 2026   15:02:07
+Plotname: Operating Point
+Flags: real
+No. Variables: 16
+No. Points: 1
+Variables:
+	0	v(vdd)	voltage
+	1	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	2	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	3	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	4	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	5	i(@rb1_bot[i])	current
+	6	i(@rb1_top[i])	current
+	7	i(@rc1[i])	current
+	8	i(@re1[i])	current
+	9	i(@rload_op[i])	current
+	10	v(b1_base)	voltage
+	11	v(b1_collector)	voltage
+	12	v(b1_emitter)	voltage
+	13	v(b1_out)	voltage
+	14	i(vdd)	current
+	15	i(vout_alias)	current
+Values:
+ 0	5.000000000000000e+00
+	4.376012193146676e-07
+	1.633835687731729e-05
+	-1.677596145722544e-05
+	3.349006921005277e-12
+	1.129207367493485e-05
+	1.172967464395914e-05
+	1.634171710168158e-05
+	1.677594888182409e-05
+	3.365828289831843e-09
+	1.129207367493484e+00
+	3.365828289831843e+00
+	3.355189776364819e-01
+	3.365828289831843e+00
+	-2.807139174564071e-05
+	-3.365828289831843e-09
+

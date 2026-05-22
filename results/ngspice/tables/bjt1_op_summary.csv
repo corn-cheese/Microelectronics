@@ -1,0 +1,11 @@
+metric,value,unit,notes
+vdd,5.000000,V,Supply voltage
+b1_base,1.129207,V,Base DC operating point
+b1_emitter,0.335519,V,Emitter DC operating point
+b1_collector,3.365828,V,Collector DC operating point
+b1_out,3.365828,V,Alias of collector output node
+vbe1,0.793688,V,b1_base minus b1_emitter
+vce1,3.030309,V,b1_collector minus b1_emitter
+ivdd,-2.80714e-05,A,ngspice current through VDD source
+istatic,2.80714e-05,A,absolute supply current
+pdc,1.40357e-04,W,5 V times istatic

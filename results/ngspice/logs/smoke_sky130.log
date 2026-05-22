@@ -1,0 +1,23 @@
+
+Note: Compatibility modes selected: hs a
+
+
+Circuit: * sky130 + ngspice smoke test
+
+Warning: Model issue on line 28 :
+  .model xsmoke:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tre ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+
+No. of Data Rows : 1
+v(vdd) = 5.000000e+00
+v(c) = 4.965966e+00
+v(b) = 7.500000e-01
+v(e) = 0.000000e+00
+ASCII raw file "D:/Codex/Support/results/ngspice/raw/smoke_sky130.raw"
+ngspice-46 done

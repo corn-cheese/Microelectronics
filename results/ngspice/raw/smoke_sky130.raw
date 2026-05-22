@@ -1,0 +1,34 @@
+Title: * sky130 + ngspice smoke test
+Date: Fri May 22 16:21:19  2026
+Command: ngspice-46, Build Mar 29 2026   15:02:07
+Plotname: Operating Point
+Flags: real
+No. Variables: 12
+No. Points: 1
+Variables:
+	0	v(vdd)	voltage
+	1	i(@q.xsmoke.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	2	i(@q.xsmoke.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	3	i(@q.xsmoke.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	4	i(@q.xsmoke.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	5	i(@rc[i])	current
+	6	v(b)	voltage
+	7	v(c)	voltage
+	8	v(e)	voltage
+	9	i(vb)	current
+	10	i(vdd)	current
+	11	i(ve)	current
+Values:
+ 0	5.000000000000000e+00
+	8.943476263539260e-08
+	3.403353690136573e-06
+	-3.492793417647942e-06
+	4.955088385470944e-12
+	3.403358655010980e-06
+	7.500000000000000e-01
+	4.965966413449890e+00
+	0.000000000000000e+00
+	-8.943476263560679e-08
+	-3.403358655010985e-06
+	3.492788452771788e-06
+
