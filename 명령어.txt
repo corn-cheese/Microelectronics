@@ -1,3 +1,19 @@
 & "C:\eda\ngspice\Spice64\bin\ngspice.exe"
-load D:/Codex/Support/results/ngspice/raw/bjt3_sweep_highcut_ch30p_ac_wide.raw
+
+load D:/Codex/Support/Microelectronics-2stage/results/ngspice/raw_tmp/bjt2_sweep_ppa_rc120k_re3p9k_rb4p7m_c68n_cout10n_ch22p_r10k_c220p_ft250k_ac.raw
 plot gain_db xlog xlimit 1m 1Meg
+plot gain_vv xlog xlimit 1m 1Meg
+plot phase_deg xlog xlimit 1m 1Meg
+
+load D:/Codex/Support/Microelectronics-2stage/results/ngspice/raw_tmp/bjt2_sweep_ppa_rc120k_re3p9k_rb4p7m_c68n_cout10n_ch22p_r10k_c220p_ft250k_tran.raw
+plot v(vin) v(vout_final) xlimit 50m 100m
+plot v(b1_collector) v(b2_collector) v(vout_drv) v(vfilt1) v(vout_final) xlimit 50m 100m
+plot i(vdd) xlimit 50m 100m
+
+load D:/Codex/Support/Microelectronics-2stage/results/ngspice/raw_tmp/bjt2_sweep_ppa_rc120k_re3p9k_rb4p7m_c68n_cout10n_ch22p_r10k_c220p_ft250k_noise_10hz_20khz.raw
+plot onoise_spectrum xlog xlimit 10 20k
+plot inoise_spectrum xlog xlimit 10 20k
+
+
+
+powershell -ExecutionPolicy Bypass -File .\maxrun\run_workflow_maxrun.ps1 -Runs 7

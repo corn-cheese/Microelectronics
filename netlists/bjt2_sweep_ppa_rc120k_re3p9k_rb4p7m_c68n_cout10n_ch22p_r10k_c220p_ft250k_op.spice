@@ -1,0 +1,76 @@
+* SKY130 BJT 2-stage PPA sweep op: CE1 -> CE2 -> output rebias -> ideal OPAMP follower -> two RC poles
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/models/corners/tt/nonfet.spice"
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/cells/npn_05v5/sky130_fd_pr__npn_05v5__t.corner.spice"
+
+.option savecurrents
+.option klu
+.option reltol=1e-4
+
+.param VDD=5
+.param VCM=2.5
+.param RB_TOP=4.7Meg
+.param RB_BOT=1Meg
+.param RCVAL=120k
+.param REVAL=3.9k
+.param CCPL=68n
+.param COUT=10n
+.param CH=22p
+.param ROUT=10Meg
+.param RBUF=10k
+.param CBUF=220p
+.param OPAMP_FT=250k
+.param IOPAMP={OPAMP_FT*7e-12}
+.param pi=3.141592653589793
+.param ROPAMP=1k
+.param COPAMP={1/(2*pi*ROPAMP*OPAMP_FT)}
+
+VDD vdd 0 {VDD}
+VIN vin 0 DC {VCM}
+
+CIN vin b1_base {CCPL}
+
+RB1_TOP vdd b1_base {RB_TOP}
+RB1_BOT b1_base 0 {RB_BOT}
+RC1 vdd b1_collector {RCVAL}
+RE1 b1_emitter 0 {REVAL}
+XQ1 b1_collector b1_base b1_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+CH1 b1_collector 0 {CH}
+
+C12 b1_collector b2_base {CCPL}
+
+RB2_TOP vdd b2_base {RB_TOP}
+RB2_BOT b2_base 0 {RB_BOT}
+RC2 vdd b2_collector {RCVAL}
+RE2 b2_emitter 0 {REVAL}
+XQ2 b2_collector b2_base b2_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+CH2 b2_collector 0 {CH}
+
+COUT b2_collector vout_drv {COUT}
+ROUT_TOP vdd vout_drv {ROUT}
+ROUT_BOT vout_drv 0 {ROUT}
+EBUF vop_ideal 0 vout_drv 0 1
+ROPAMP vop_ideal vbuf {ROPAMP}
+COPAMP vbuf 0 {COPAMP}
+IOPAMP vdd 0 {IOPAMP}
+RBUF1 vbuf vfilt1 {RBUF}
+CBUF1 vfilt1 0 {CBUF}
+RBUF2 vfilt1 vout_final {RBUF}
+CBUF2 vout_final 0 {CBUF}
+CLOAD_10P vout_final 0 10p
+
+
+.control
+set noaskquit
+op
+print v(vdd)
+print v(b1_base) v(b1_emitter) v(b1_collector)
+print v(b2_base) v(b2_emitter) v(b2_collector) v(vout_drv) v(vfilt1) v(vout_final)
+print v(b1_base)-v(b1_emitter) v(b1_collector)-v(b1_emitter)
+print v(b2_base)-v(b2_emitter) v(b2_collector)-v(b2_emitter)
+print v(b1_collector)-v(b2_base)
+print i(vdd)
+write D:/Codex/Support/Microelectronics-2stage/results/ngspice/raw_tmp/bjt2_sweep_ppa_rc120k_re3p9k_rb4p7m_c68n_cout10n_ch22p_r10k_c220p_ft250k_op.raw
+quit
+.endc
+
+.end

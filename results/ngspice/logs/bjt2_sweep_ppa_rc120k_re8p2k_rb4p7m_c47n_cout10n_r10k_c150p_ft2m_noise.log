@@ -1,0 +1,34 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * sky130 bjt 2-stage ppa sweep noise: ce1 -> ce2 -> output rebias -> ideal opamp follower -> two rc poles
+
+Warning: Model issue on line 28 :
+  .model xq1:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Warning: Model issue on line 28 :
+  .model xq2:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+No. of Data Rows : 1
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+No. of Data Rows : 265
+
+No. of Data Rows : 1
+ASCII raw file "D:/Codex/Support/Microelectronics-2stage/results/ngspice/raw/bjt2_sweep_ppa_rc120k_re8p2k_rb4p7m_c47n_cout10n_r10k_c150p_ft2m_noise_10hz_20khz.raw"
+onoise_total = 3.401573e-04
+inoise_total = 9.809223e-06
+ngspice-46 done

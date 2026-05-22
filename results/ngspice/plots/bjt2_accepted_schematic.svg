@@ -1,0 +1,278 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1040" viewBox="0 0 1800 1040" role="img" aria-labelledby="title desc">
+  <title id="title">Accepted 2-Stage BJT Neural Signal Amplifier Schematic</title>
+  <desc id="desc">Visual schematic for the accepted two common-emitter BJT amplifier with output rebias buffer, two-pole RC filter, and 10 pF load.</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfcfb; }
+      .panel { fill: #ffffff; stroke: #d7dcd9; stroke-width: 2; rx: 8; }
+      .subpanel { fill: #f5f8f7; stroke: #cfd8d4; stroke-width: 1.5; rx: 8; }
+      .wire { stroke: #1e2725; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .thin { stroke: #1e2725; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .device { stroke: #111817; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .cap { stroke: #1f6f9f; stroke-width: 4; fill: none; stroke-linecap: round; }
+      .node { fill: #1e2725; }
+      .stage1 { stroke: #2e7d6e; }
+      .stage2 { stroke: #b56d32; }
+      .buffer { stroke: #6f5aa6; }
+      .filter { stroke: #496f97; }
+      .title { font-family: Arial, Helvetica, sans-serif; font-size: 34px; font-weight: 700; fill: #111817; }
+      .subtitle { font-family: Arial, Helvetica, sans-serif; font-size: 18px; fill: #4d5a56; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; fill: #111817; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 16px; fill: #313d39; }
+      .value { font-family: Arial, Helvetica, sans-serif; font-size: 15px; fill: #42504b; }
+      .tiny { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #586762; }
+      .railtext { font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; fill: #111817; }
+      .metric { font-family: Arial, Helvetica, sans-serif; font-size: 16px; fill: #18211f; }
+      .metricstrong { font-family: Arial, Helvetica, sans-serif; font-size: 17px; font-weight: 700; fill: #18211f; }
+      .arrowline { marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 11 4, 0 8" fill="#1e2725"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1040" class="bg"/>
+  <text x="56" y="62" class="title">Accepted 2-Stage BJT Neural Signal Amplifier</text>
+  <text x="56" y="94" class="subtitle">Source: netlists/bjt2_sweep_ppa_rc120k_re3p9k_rb4p7m_c68n_cout10n_ch22p_r10k_c220p_ft250k_ac.spice</text>
+
+  <line x1="80" y1="140" x2="1610" y2="140" class="wire"/>
+  <text x="1632" y="147" class="railtext">VDD = 5 V</text>
+  <line x1="80" y1="760" x2="1610" y2="760" class="wire"/>
+  <text x="1632" y="767" class="railtext">GND</text>
+
+  <rect x="70" y="120" width="545" height="665" class="panel"/>
+  <rect x="630" y="120" width="545" height="665" class="panel"/>
+  <rect x="1190" y="120" width="520" height="665" class="panel"/>
+  <text x="96" y="178" class="label">Stage 1: common-emitter gain</text>
+  <text x="656" y="178" class="label">Stage 2: common-emitter gain</text>
+  <text x="1216" y="178" class="label">Output rebias, buffer, and filter</text>
+
+  <!-- Input source and coupling capacitor -->
+  <circle cx="118" cy="456" r="40" class="device"/>
+  <text x="88" y="452" class="label">VIN</text>
+  <text x="75" y="482" class="tiny">DC 2.5 V, AC 1</text>
+  <line x1="118" y1="496" x2="118" y2="760" class="wire"/>
+  <line x1="98" y1="438" x2="138" y2="438" class="thin"/>
+  <line x1="118" y1="418" x2="118" y2="458" class="thin"/>
+  <line x1="118" y1="416" x2="118" y2="320" class="wire"/>
+  <line x1="118" y1="320" x2="198" y2="320" class="wire arrowline"/>
+  <line x1="208" y1="280" x2="208" y2="360" class="cap"/>
+  <line x1="236" y1="280" x2="236" y2="360" class="cap"/>
+  <line x1="236" y1="320" x2="312" y2="320" class="wire arrowline"/>
+  <text x="185" y="260" class="label">CIN</text>
+  <text x="184" y="383" class="value">68 nF</text>
+
+  <!-- Stage 1 bias divider -->
+  <line x1="312" y1="140" x2="312" y2="205" class="wire"/>
+  <polyline points="312,205 292,217 332,241 292,265 332,289 292,313 312,337" class="device"/>
+  <line x1="312" y1="337" x2="312" y2="430" class="wire"/>
+  <polyline points="312,430 292,442 332,466 292,490 332,514 292,538 312,562" class="device"/>
+  <line x1="312" y1="562" x2="312" y2="760" class="wire"/>
+  <circle cx="312" cy="320" r="6" class="node"/>
+  <text x="342" y="247" class="small">RB1_TOP</text>
+  <text x="342" y="269" class="value">4.7 MOhm</text>
+  <text x="342" y="485" class="small">RB1_BOT</text>
+  <text x="342" y="507" class="value">1 MOhm</text>
+  <text x="332" y="328" class="value">b1_base</text>
+
+  <!-- Stage 1 collector resistor and BJT -->
+  <line x1="520" y1="140" x2="520" y2="205" class="wire"/>
+  <polyline points="520,205 500,217 540,241 500,265 540,289 500,313 520,337" class="device"/>
+  <text x="545" y="247" class="small">RC1</text>
+  <text x="545" y="269" class="value">120 kOhm</text>
+  <circle cx="520" cy="337" r="6" class="node"/>
+
+  <circle cx="476" cy="482" r="72" class="device stage1"/>
+  <line x1="312" y1="320" x2="412" y2="450" class="wire"/>
+  <line x1="412" y1="412" x2="412" y2="546" class="device"/>
+  <line x1="412" y1="450" x2="472" y2="410" class="device"/>
+  <line x1="472" y1="410" x2="520" y2="337" class="wire"/>
+  <line x1="412" y1="515" x2="472" y2="556" class="device"/>
+  <line x1="472" y1="556" x2="520" y2="625" class="wire"/>
+  <polyline points="454,547 479,560 462,533" class="device"/>
+  <text x="458" y="486" class="label">Q1</text>
+  <text x="350" y="590" class="tiny">sky130_fd_pr__npn_05v5</text>
+
+  <line x1="520" y1="625" x2="520" y2="650" class="wire"/>
+  <polyline points="520,650 500,662 540,686 500,710 540,734 520,760" class="device"/>
+  <text x="545" y="696" class="small">RE1</text>
+  <text x="545" y="718" class="value">3.9 kOhm</text>
+  <circle cx="520" cy="625" r="6" class="node"/>
+  <text x="544" y="344" class="value">b1_collector</text>
+  <text x="544" y="635" class="value">b1_emitter</text>
+
+  <!-- Stage 1 HF cap -->
+  <line x1="520" y1="337" x2="572" y2="337" class="wire"/>
+  <line x1="572" y1="337" x2="572" y2="424" class="wire"/>
+  <line x1="552" y1="424" x2="592" y2="424" class="cap"/>
+  <line x1="552" y1="448" x2="592" y2="448" class="cap"/>
+  <line x1="572" y1="448" x2="572" y2="760" class="wire"/>
+  <text x="528" y="418" class="small">CH1</text>
+  <text x="528" y="472" class="value">22 pF</text>
+
+  <!-- Interstage coupling capacitor -->
+  <line x1="520" y1="337" x2="690" y2="337" class="wire arrowline"/>
+  <line x1="700" y1="297" x2="700" y2="377" class="cap"/>
+  <line x1="728" y1="297" x2="728" y2="377" class="cap"/>
+  <line x1="728" y1="337" x2="872" y2="337" class="wire arrowline"/>
+  <text x="681" y="277" class="label">C12</text>
+  <text x="676" y="400" class="value">68 nF</text>
+
+  <!-- Stage 2 bias divider -->
+  <line x1="872" y1="140" x2="872" y2="205" class="wire"/>
+  <polyline points="872,205 852,217 892,241 852,265 892,289 852,313 872,337" class="device"/>
+  <line x1="872" y1="337" x2="872" y2="430" class="wire"/>
+  <polyline points="872,430 852,442 892,466 852,490 892,514 852,538 872,562" class="device"/>
+  <line x1="872" y1="562" x2="872" y2="760" class="wire"/>
+  <circle cx="872" cy="337" r="6" class="node"/>
+  <text x="902" y="247" class="small">RB2_TOP</text>
+  <text x="902" y="269" class="value">4.7 MOhm</text>
+  <text x="902" y="485" class="small">RB2_BOT</text>
+  <text x="902" y="507" class="value">1 MOhm</text>
+  <text x="892" y="345" class="value">b2_base</text>
+
+  <!-- Stage 2 collector resistor and BJT -->
+  <line x1="1080" y1="140" x2="1080" y2="205" class="wire"/>
+  <polyline points="1080,205 1060,217 1100,241 1060,265 1100,289 1060,313 1080,337" class="device"/>
+  <text x="1105" y="247" class="small">RC2</text>
+  <text x="1105" y="269" class="value">120 kOhm</text>
+  <circle cx="1080" cy="337" r="6" class="node"/>
+
+  <circle cx="1036" cy="482" r="72" class="device stage2"/>
+  <line x1="872" y1="337" x2="972" y2="450" class="wire"/>
+  <line x1="972" y1="412" x2="972" y2="546" class="device"/>
+  <line x1="972" y1="450" x2="1032" y2="410" class="device"/>
+  <line x1="1032" y1="410" x2="1080" y2="337" class="wire"/>
+  <line x1="972" y1="515" x2="1032" y2="556" class="device"/>
+  <line x1="1032" y1="556" x2="1080" y2="625" class="wire"/>
+  <polyline points="1014,547 1039,560 1022,533" class="device"/>
+  <text x="1018" y="486" class="label">Q2</text>
+  <text x="910" y="590" class="tiny">sky130_fd_pr__npn_05v5</text>
+
+  <line x1="1080" y1="625" x2="1080" y2="650" class="wire"/>
+  <polyline points="1080,650 1060,662 1100,686 1060,710 1100,734 1080,760" class="device"/>
+  <text x="1105" y="696" class="small">RE2</text>
+  <text x="1105" y="718" class="value">3.9 kOhm</text>
+  <circle cx="1080" cy="625" r="6" class="node"/>
+  <text x="1104" y="344" class="value">b2_collector</text>
+  <text x="1104" y="635" class="value">b2_emitter</text>
+
+  <!-- Stage 2 HF cap -->
+  <line x1="1080" y1="337" x2="1132" y2="337" class="wire"/>
+  <line x1="1132" y1="337" x2="1132" y2="424" class="wire"/>
+  <line x1="1112" y1="424" x2="1152" y2="424" class="cap"/>
+  <line x1="1112" y1="448" x2="1152" y2="448" class="cap"/>
+  <line x1="1132" y1="448" x2="1132" y2="760" class="wire"/>
+  <text x="1088" y="418" class="small">CH2</text>
+  <text x="1088" y="472" class="value">22 pF</text>
+
+  <!-- Output coupling and rebias -->
+  <line x1="1080" y1="337" x2="1230" y2="337" class="wire arrowline"/>
+  <line x1="1240" y1="297" x2="1240" y2="377" class="cap"/>
+  <line x1="1268" y1="297" x2="1268" y2="377" class="cap"/>
+  <line x1="1268" y1="337" x2="1328" y2="337" class="wire arrowline"/>
+  <text x="1215" y="277" class="label">COUT</text>
+  <text x="1222" y="400" class="value">10 nF</text>
+
+  <line x1="1328" y1="140" x2="1328" y2="214" class="wire"/>
+  <polyline points="1328,214 1308,226 1348,250 1308,274 1348,298 1308,322 1328,337" class="device"/>
+  <line x1="1328" y1="337" x2="1328" y2="430" class="wire"/>
+  <polyline points="1328,430 1308,442 1348,466 1308,490 1348,514 1308,538 1328,562" class="device"/>
+  <line x1="1328" y1="562" x2="1328" y2="760" class="wire"/>
+  <circle cx="1328" cy="337" r="6" class="node"/>
+  <text x="1354" y="255" class="small">ROUT_TOP</text>
+  <text x="1354" y="277" class="value">10 MOhm</text>
+  <text x="1354" y="485" class="small">ROUT_BOT</text>
+  <text x="1354" y="507" class="value">10 MOhm</text>
+  <text x="1354" y="346" class="value">vout_drv, rebias near 2.5 V</text>
+
+  <!-- Ideal buffer with finite pole -->
+  <line x1="1328" y1="337" x2="1445" y2="337" class="wire arrowline"/>
+  <polygon points="1445,287 1445,387 1535,337" class="device buffer"/>
+  <line x1="1535" y1="337" x2="1578" y2="337" class="wire"/>
+  <text x="1468" y="331" class="label">EBUF</text>
+  <text x="1430" y="414" class="value">unity follower, FT = 250 kHz</text>
+  <line x1="1578" y1="337" x2="1578" y2="432" class="wire"/>
+  <polyline points="1578,432 1558,444 1598,468 1558,492 1598,516 1558,540 1578,562" class="device"/>
+  <line x1="1578" y1="562" x2="1578" y2="760" class="wire"/>
+  <text x="1604" y="493" class="small">ROPAMP</text>
+  <text x="1604" y="515" class="value">1 kOhm</text>
+  <line x1="1578" y1="337" x2="1640" y2="337" class="wire"/>
+  <line x1="1640" y1="337" x2="1640" y2="434" class="wire"/>
+  <line x1="1620" y1="434" x2="1660" y2="434" class="cap"/>
+  <line x1="1620" y1="458" x2="1660" y2="458" class="cap"/>
+  <line x1="1640" y1="458" x2="1640" y2="760" class="wire"/>
+  <text x="1668" y="449" class="small">COPAMP</text>
+  <text x="1668" y="471" class="value">sets FT pole</text>
+
+  <!-- Two-pole RC filter -->
+  <path d="M1578 337 L1578 250 L1328 250" class="thin"/>
+  <text x="1376" y="232" class="tiny">buffer load isolation</text>
+  <line x1="1578" y1="337" x2="1578" y2="612" class="wire"/>
+  <line x1="1578" y1="612" x2="1408" y2="612" class="wire"/>
+  <polyline points="1408,612 1388,600 1368,624 1348,600 1328,624 1308,600 1288,612" class="device filter"/>
+  <line x1="1288" y1="612" x2="1228" y2="612" class="wire"/>
+  <line x1="1228" y1="612" x2="1228" y2="690" class="wire"/>
+  <line x1="1208" y1="690" x2="1248" y2="690" class="cap"/>
+  <line x1="1208" y1="714" x2="1248" y2="714" class="cap"/>
+  <line x1="1228" y1="714" x2="1228" y2="760" class="wire"/>
+  <text x="1340" y="588" class="small">RBUF1</text>
+  <text x="1350" y="653" class="value">10 kOhm</text>
+  <text x="1180" y="675" class="small">CBUF1</text>
+  <text x="1186" y="737" class="value">220 pF</text>
+  <text x="1202" y="594" class="value">vfilt1</text>
+
+  <line x1="1228" y1="612" x2="1080" y2="612" class="wire"/>
+  <polyline points="1080,612 1060,600 1040,624 1020,600 1000,624 980,600 960,612" class="device filter"/>
+  <line x1="960" y1="612" x2="890" y2="612" class="wire arrowline"/>
+  <line x1="890" y1="612" x2="890" y2="690" class="wire"/>
+  <line x1="870" y1="690" x2="910" y2="690" class="cap"/>
+  <line x1="870" y1="714" x2="910" y2="714" class="cap"/>
+  <line x1="890" y1="714" x2="890" y2="760" class="wire"/>
+  <text x="1010" y="588" class="small">RBUF2</text>
+  <text x="1018" y="653" class="value">10 kOhm</text>
+  <text x="842" y="675" class="small">CBUF2</text>
+  <text x="848" y="737" class="value">220 pF</text>
+  <text x="796" y="604" class="label">vout_final</text>
+
+  <line x1="890" y1="612" x2="760" y2="612" class="wire"/>
+  <line x1="760" y1="612" x2="760" y2="690" class="wire"/>
+  <line x1="740" y1="690" x2="780" y2="690" class="cap"/>
+  <line x1="740" y1="714" x2="780" y2="714" class="cap"/>
+  <line x1="760" y1="714" x2="760" y2="760" class="wire"/>
+  <text x="707" y="675" class="small">CLOAD</text>
+  <text x="720" y="737" class="value">10 pF</text>
+
+  <!-- Flow labels -->
+  <rect x="96" y="820" width="376" height="84" class="subpanel"/>
+  <text x="118" y="850" class="metricstrong">Signal path</text>
+  <text x="118" y="876" class="metric">VIN -> CIN -> CE1 -> C12 -> CE2 -> COUT</text>
+  <text x="118" y="898" class="metric">-> rebias -> buffer -> two RC poles -> load</text>
+
+  <rect x="500" y="820" width="386" height="84" class="subpanel"/>
+  <text x="522" y="850" class="metricstrong">Accepted AC behavior</text>
+  <text x="522" y="876" class="metric">Midband gain = 39.760 dB, fL = 12.57 Hz</text>
+  <text x="522" y="898" class="metric">fH = 20.409 kHz, HF slope = -80.56 dB/dec</text>
+
+  <rect x="914" y="820" width="360" height="84" class="subpanel"/>
+  <text x="936" y="850" class="metricstrong">PPA summary</text>
+  <text x="936" y="876" class="metric">Power = 65.172 uW</text>
+  <text x="936" y="898" class="metric">Area = 1.820824e8 p</text>
+
+  <rect x="1302" y="820" width="396" height="84" class="subpanel"/>
+  <text x="1324" y="850" class="metricstrong">Dominant area terms</text>
+  <text x="1324" y="876" class="metric">CIN and C12 = 68 nF each</text>
+  <text x="1324" y="898" class="metric">COUT = 10 nF; CBUF1/2 = 220 pF each</text>
+
+  <line x1="120" y1="760" x2="120" y2="780" class="wire"/>
+  <line x1="95" y1="780" x2="145" y2="780" class="wire"/>
+  <line x1="103" y1="793" x2="137" y2="793" class="wire"/>
+  <line x1="112" y1="806" x2="128" y2="806" class="wire"/>
+
+  <line x1="1640" y1="760" x2="1640" y2="780" class="wire"/>
+  <line x1="1615" y1="780" x2="1665" y2="780" class="wire"/>
+  <line x1="1623" y1="793" x2="1657" y2="793" class="wire"/>
+  <line x1="1632" y1="806" x2="1648" y2="806" class="wire"/>
+
+  <text x="56" y="968" class="tiny">This SVG is a visualization artifact for reports and review. It preserves the accepted netlist topology and component values, but it is not a layout-extracted schematic.</text>
+</svg>

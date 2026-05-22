@@ -1,0 +1,98 @@
+Title: * sky130 bjt 2-stage ppa sweep op: ce1 -> ce2 -> output rebias -> ideal opamp follower -> two rc poles
+Date: Sat May 23 01:13:31  2026
+Command: ngspice-46, Build Mar 29 2026   15:02:07
+Plotname: Operating Point
+Flags: real
+No. Variables: 44
+No. Points: 1
+Variables:
+	0	v(vdd)	voltage
+	1	i(@c12[i])	current
+	2	i(@cbuf1[i])	current
+	3	i(@cbuf2[i])	current
+	4	i(@ch1[i])	current
+	5	i(@ch2[i])	current
+	6	i(@cin[i])	current
+	7	i(@cload_10p[i])	current
+	8	i(@cout[i])	current
+	9	i(@iopamp[current])	current
+	10	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	11	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	12	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	13	i(@q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	14	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib])	current
+	15	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic])	current
+	16	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie])	current
+	17	i(@q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[is])	current
+	18	i(@rb1_bot[i])	current
+	19	i(@rb1_top[i])	current
+	20	i(@rb2_bot[i])	current
+	21	i(@rb2_top[i])	current
+	22	i(@rbuf1[i])	current
+	23	i(@rbuf2[i])	current
+	24	i(@rc1[i])	current
+	25	i(@rc2[i])	current
+	26	i(@re1[i])	current
+	27	i(@re2[i])	current
+	28	i(@rout_bot[i])	current
+	29	i(@rout_top[i])	current
+	30	v(b1_base)	voltage
+	31	v(b1_collector)	voltage
+	32	v(b1_emitter)	voltage
+	33	v(b2_base)	voltage
+	34	v(b2_collector)	voltage
+	35	v(b2_emitter)	voltage
+	36	i(ebuf)	current
+	37	v(vbuf)	voltage
+	38	i(vdd)	current
+	39	v(vfilt1)	voltage
+	40	v(vin)	voltage
+	41	i(vin)	current
+	42	v(vout_drv)	voltage
+	43	v(vout_final)	voltage
+Values:
+ 0	5.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	0.000000000000000e+00
+	1.400000000000000e-05
+	1.216235505736508e-07
+	4.618709445571407e-06
+	-4.740337532793824e-06
+	4.526465138992655e-12
+	1.216235505736179e-07
+	4.618709445570162e-06
+	-4.740337532792546e-06
+	4.526465138992895e-12
+	7.769068968955638e-07
+	8.985304474690291e-07
+	7.769068968955513e-07
+	8.985304474690318e-07
+	0.000000000000000e+00
+	0.000000000000000e+00
+	4.618713982219554e-06
+	4.618713982217147e-06
+	4.740332996144830e-06
+	4.740332996143483e-06
+	2.500000000000000e-07
+	2.500000000000000e-07
+	7.769068968955638e-01
+	4.538128601778045e+00
+	1.848729868496484e-02
+	7.769068968955513e-01
+	4.538128601778285e+00
+	1.848729868495958e-02
+	0.000000000000000e+00
+	2.500000000000000e+00
+	-2.528448885937480e-05
+	2.500000000000000e+00
+	2.500000000000000e+00
+	0.000000000000000e+00
+	2.500000000000000e+00
+	2.500000000000000e+00
+

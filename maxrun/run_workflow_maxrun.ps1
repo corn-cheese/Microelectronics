@@ -33,4 +33,4 @@ for ($i = 1; $i -le $Runs; $i++) {
 }
 
 Write-Host ""
-Write-Host "=== Done. Review changes with: git diff -- workflow.md 3stage-bjt.md progress.md netlists results ===" -ForegroundColor Green
+Write-Host "=== Done. Review changes with: git diff -- workflow.md 2stage-bjt.md progress.md netlists results ===" -ForegroundColor Green

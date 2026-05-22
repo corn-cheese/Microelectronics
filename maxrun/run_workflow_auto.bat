@@ -7,7 +7,7 @@ set RUNS=%~1
 if "%RUNS%"=="" set RUNS=1
 
 echo.
-echo === Codex 3-stage BJT workflow automation ===
+echo === Codex 2-stage BJT workflow automation ===
 echo Workspace: %CD%
 echo Runs: %RUNS%
 echo.
@@ -38,6 +38,6 @@ powershell -ExecutionPolicy Bypass -File ".\maxrun\run_workflow_maxrun.ps1" -Run
 
 echo.
 echo Finished. Review changes with:
-echo   git diff -- workflow.md 3stage-bjt.md progress.md netlists results
+echo   git diff -- workflow.md 2stage-bjt.md progress.md netlists results
 echo.
 pause
