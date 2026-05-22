@@ -290,3 +290,51 @@ All project.md content checks passed (12/12).
 - 구현: `high_cutoff_shape` family만 선택해 `netlists/bjt3_sweep_highcut_core.inc`와 `CH=22p/30p/39p` AC/transient sweep netlist를 생성했다.
 - 검증: 6개 ngspice 실행 모두 exit code `0`, `bjt3_sweep_highcut_ch*.log` 공통 로그 검증 match 없음. `results/ngspice/tables/bjt3_sweep_summary.csv`에서 `CH=30p` 후보가 `midgain=38.001764 dB`, `upper_cutoff=23005.02 Hz`, `out_pp=0.158871 V`, `load_gain_delta=-0.006636 dB`로 accepted이다.
 - 개선 결정: final candidate는 `bjt3_sweep_highcut_ch30p_ac/tran`이다. 다음 run은 Cycle G final metrics and deliverables 생성이다.
+
+## 2026-05-22 - workflow Cycle F low_cutoff_area
+
+- 구현: `goal.md`의 lower cutoff gap을 우선하여 `netlists/bjt3_sweep_lowcut_core.inc`와 `CIN=C12=C23=15n/22n/33n/47n/68n` AC/transient sweep netlist를 생성했다. accepted 후보 확인용으로 `bjt3_sweep_lowcut_c68n_op.spice`와 `bjt3_sweep_lowcut_c68n_noise_10hz_20khz.spice`도 생성했다.
+- 검증: 12개 ngspice 실행 모두 exit code `0`, `bjt3_sweep_lowcut_c*.log` 공통 로그 검증 match 없음. `CIN=C12=C23=68n` 후보는 `midgain=38.001080 dB`, `lower_cutoff=9.58104 Hz`, `upper_cutoff=23006.64 Hz`, `out_pp=0.158880 V`, `output_center=3.870130 V`로 lower cutoff gap을 통과했다. target-band noise는 `onoise_total=1.05667 mVrms`, `inoise_total=14.9991 uVrms`이다.
+- 개선 결정: final candidate를 `bjt3_sweep_lowcut_c68n_ac/tran`으로 갱신했다. 다음 run은 `RC/RE` gain-headroom sweep으로 38 dB에서 40 dB에 접근하되 headroom과 10 pF load를 재검증한다.
+
+## 2026-05-22 - workflow Cycle F gain_headroom
+
+- 구현: `goal.md`의 gain gap을 우선하여 `netlists/bjt3_sweep_gain_re_core.inc`와 `RE=19k/18.5k/18k` OP/AC/transient sweep netlist를 생성했다. accepted 후보 확인용으로 `bjt3_sweep_gain_re18p5k_noise_10hz_20khz.spice`도 생성했다.
+- 검증: 10개 ngspice 실행 모두 exit code `0`, `bjt3_sweep_gain_re*.log` 공통 로그 검증 match 없음. `RE=18.5k` 후보는 `midgain=39.7460 dB`, `lower_cutoff=9.87690 Hz`, `upper_cutoff=23093.96 Hz`, `out_pp=0.194230 V`, `output_center=3.829125 V`, `Istatic=32.9249 uA`, `PDC=164.6245 uW`로 gain-headroom gap을 통과했다. target-band noise는 `onoise_total=1.281175 mVrms`, `inoise_total=15.01883 uVrms`이다.
+- 개선 결정: final candidate를 `bjt3_sweep_gain_re18p5k_ac/tran`으로 갱신했다. 다음 run은 output rebias 후보로 2.5 V output common-mode gap을 줄이는지 검증한다.
+
+## 2026-05-22 - workflow Cycle F output_rebias
+
+- 구현: `goal.md`의 output common-mode gap을 우선하여 `netlists/bjt3_sweep_rebias_core.inc`와 `bjt3_sweep_rebias_cout68n_r10meg_{op,ac,tran,noise_10hz_20khz}.spice`를 생성했다. accepted gain path는 유지하고 final output에만 `COUT=68n`, `ROUT_TOP=ROUT_BOT=10Meg`, `CLOAD=10p`를 적용했다.
+- 검증: 4개 ngspice 실행 모두 exit code `0`, `bjt3_sweep_rebias_cout68n_r10meg*.log` 공통 로그 검증 match 없음. 후보는 `vout_final=2.500000 V`, `midgain=39.540534 dB`, `lower_cutoff=9.893984 Hz`, `upper_cutoff=23384.244 Hz`, `out_pp=0.189700 V`, `output_center=2.499700 V`, `Istatic=33.1711 uA`, `PDC=165.8555 uW`, target-band noise `inoise_total=15.01858 uVrms`로 output common-mode gap을 통과했다.
+- 개선 결정: final candidate를 `bjt3_sweep_rebias_cout68n_r10meg_ac/tran`으로 갱신했다. 다음 run은 Cycle G final metrics and deliverables 생성이며, 특히 68 nF coupling/output caps와 10 Meg rebias resistor area를 문서화한다.
+
+## 2026-05-22 - workflow Cycle G
+
+- 구현: final candidate `bjt3_sweep_rebias_cout68n_r10meg` 기준으로 `device_list.csv`, `area_calculation.csv`, `power_calculation.csv`, `target_hs.csv`, `performance_summary.csv`와 AC/transient PNG plot을 생성했다.
+- 검증: OP/AC/tran/noise netlist를 재실행했고 모두 exit code `0`, `bjt3_sweep_rebias_cout68n_r10meg*.log` 공통 로그 검증 match 없음. final summary는 `midgain=39.540534 dB`, `lower_cutoff=9.87505 Hz`, `upper_cutoff=23430.24 Hz`, `worst_power=165.862 uW`, `area_p=335622691.348`, `ac_nrmse=0.16544`, `tran_nrmse=0.02480`이다.
+- 개선 결정: Cycle G deliverables를 accepted로 둔다. 다음 run은 새 회로 생성 없이 final integration review를 수행한다.
+
+## 2026-05-22 - workflow Cycle F COUT pole alignment
+
+- 구현: `goal.md`의 low-frequency rolloff gap을 우선하여 output rebias family 안에서 `COUT`만 바꾼 `bjt3_sweep_coutalign_c3p3n/c4p7n/c6p8n/c10n/c15n_{ac,tran}.spice`를 생성했다. accepted 후보 확인용으로 `bjt3_sweep_coutalign_c10n_op.spice`와 `bjt3_sweep_coutalign_c10n_noise_10hz_20khz.spice`도 생성했다.
+- 검증: 12개 ngspice 실행 모두 exit code `0`, `bjt3_sweep_coutalign_c*.log` 공통 로그 검증 match 없음. `COUT=10n` 후보는 `midgain=39.533420 dB`, lower cutoff `10.59978 Hz`, upper cutoff `23386.60 Hz`, `out_pp=0.189597 V`, output center `2.499753 V`, `Istatic=33.1711 uA`, `PDC=165.8555 uW`이다. target-band noise는 `onoise_total=1.231839 mVrms`, `inoise_total=15.01115 uVrms`이다.
+- 개선 결정: final candidate를 `bjt3_sweep_coutalign_c10n_ac/tran`으로 갱신했다. Low-frequency slope는 68 nF 후보의 약 `60.36 dB/dec`와 `40.20 dB/dec`에서 `72.51 dB/dec`와 `49.26 dB/dec`로 개선됐고 AC nRMSE는 `0.16544`에서 `0.160141`로 개선됐다. 다음 run은 Cycle G deliverables를 새 accepted candidate 기준으로 재생성한다.
+
+## 2026-05-22 - workflow Cycle G refresh
+
+- 구현: final candidate `bjt3_sweep_coutalign_c10n` 기준으로 OP/AC/transient/noise netlist를 재실행하고 `device_list.csv`, `area_calculation.csv`, `power_calculation.csv`, `target_hs.csv`, `performance_summary.csv`와 AC/transient PNG plot을 갱신했다. 재생성 로직은 `maxrun/regenerate_cycle_g_coutalign.mjs`에 남겼다.
+- 검증: OP/AC/tran/noise ngspice 실행은 모두 exit code `0`였고, `Select-String .\results\ngspice\logs\bjt3_sweep_coutalign_c10n*.log -Pattern "can't find|unknown|fatal|singular|error|failed"` 결과는 비어 있었다. final summary는 `midgain=39.53342 dB`, lower cutoff `10.59978 Hz`, upper cutoff `23386.60 Hz`, `out_pp=0.189597 V`, `output_center=2.499753 V`, `worst_power=165.862 uW`, `area_p=264800475.176`, `ac_nrmse=0.160141`, `tran_nrmse=0.024391`이다.
+- 개선 결정: Cycle G deliverables를 `bjt3_sweep_coutalign_c10n` 기준 accepted로 갱신했다. 다음 run은 새 회로 생성 없이 final integration review를 수행하거나, 80 dB/dec high-frequency rolloff가 hard target이면 `high_cutoff_shape`의 4th pole 후보를 한 가지만 검증한다.
+
+## 2026-05-22 - workflow Cycle F high_cutoff_shape 4th-pole output-cap sweep
+
+- 구현: `goal.md`의 high-frequency rolloff gap을 우선하여 `maxrun/run_hf4pole_sweep.mjs`를 추가하고, 현재 final candidate `bjt3_sweep_coutalign_c10n`에 final output shunt capacitor `CHOUT=10p/15p/22p/33p/47p`만 추가한 `bjt3_sweep_hf4pole_chout*_{op,ac,tran}.spice`를 생성했다. 결과는 `results/ngspice/tables/bjt3_sweep_hf4pole_summary.csv`와 기존 `bjt3_sweep_summary.csv`에 기록했다.
+- 검증: 15개 ngspice 실행은 모두 exit code `0`였고, `Select-String .\results\ngspice\logs\bjt3_sweep_hf4pole_chout*.log -Pattern "can't find|unknown|fatal|singular|error|failed"` 결과는 비어 있었다. 가장 작은 `CHOUT=10p`는 `midgain=39.523048 dB`, `fL=10.59431 Hz`, `fH=20593.90 Hz`, `out_pp=0.189357 V`, `output_center=2.499754 V`로 기본 gate는 유지했지만 high-frequency slope는 `10k-100k=-22.87 dB/dec`, `20k-200k=-36.84 dB/dec`, `100k-1Meg=-57.23 dB/dec`로 기존 far slope를 거의 개선하지 못했다. `CHOUT>=15p`는 upper cutoff가 `20 kHz` 아래로 내려가 rejected이다.
+- 개선 결정: output node에 shunt capacitor만 더하는 4th-pole 후보는 accepted하지 않는다. 현재 final candidate는 `bjt3_sweep_coutalign_c10n`으로 유지한다. 다음 run은 `high_cutoff_shape` 안에서 output isolation resistor plus load/fourth-pole capacitor 형태를 한 가지 family로 검증해 실제 독립 pole을 만들 수 있는지 확인한다.
+
+## 2026-05-22 - workflow Cycle F high_cutoff_shape output-isolation sweep
+
+- 구현: `goal.md`의 high-frequency rolloff gap을 우선하여 `maxrun/run_hfiso_sweep.mjs`를 추가하고, 현재 final candidate `bjt3_sweep_coutalign_c10n`의 output rebias node를 `vout_drv -- RISO -- vout_final`로 분리한 `bjt3_sweep_hfiso_r68k/r100k/r150k/r220k/r330k/r470k_{op,ac,tran}.spice`를 생성했다. `CLOAD_10P=10p`는 최종 `vout_final`에만 유지했다.
+- 검증: 18개 ngspice 실행은 모두 exit code `0`였고, `Select-String .\results\ngspice\logs\bjt3_sweep_hfiso_r*.log -Pattern "can't find|unknown|fatal|singular|error|failed"` 결과는 비어 있었다. `RISO=220k`가 bandwidth를 유지한 가장 강한 후보로 `midgain=39.531713 dB`, `fL=10.59639 Hz`, `fH=20831.99846 Hz`, `out_pp=0.189549 V`, `output_center=2.499754 V`였지만 high-frequency slope는 `10k-100k=-24.88 dB/dec`, `20k-200k=-42.51 dB/dec`, `100k-1Meg=-73.68 dB/dec`에 그쳤다. `RISO=330k/470k`는 far slope가 더 강하지만 upper cutoff가 각각 `19224.77878 Hz`, `17273.37334 Hz`로 20 kHz 목표 아래라 rejected이다.
+- 개선 결정: output-isolation/load-pole 단독 family는 accepted하지 않는다. 현재 final candidate는 `bjt3_sweep_coutalign_c10n`으로 유지한다. 다음 run은 80 dB/dec high-frequency rolloff가 hard target이면 같은 `high_cutoff_shape` family 안에서 기존 `CH1/CH2/CH3`를 줄여 upper-cutoff headroom을 확보한 뒤 `RISO`를 함께 조정하는 후보를 검증한다.

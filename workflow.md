@@ -1,5 +1,9 @@
 # Codex Max Run Master Workflow: 3-Stage BJT Amplifier
 
+Before every new simulation or tuning run, read `goal.md` first. Use it to choose the next design gap to address, then compare the run result against its acceptance criteria.
+
+After every workflow iteration, append a short entry to `change.md`. Record only the problem addressed, the change made, the verification result, and the next focused action. Keep detailed run notes in `progress.md`.
+
 이 문서는 `D:\Codex\Support`에서 `codex.cmd exec`에 그대로 넘겨 반복 실행할 수 있는 master workflow prompt이다. 한 번의 run은 현재 파일과 결과 산출물만 읽고, 다음으로 필요한 **하나의 구현-검증-개선 단위**만 수행한다.
 
 실행 예:
@@ -33,6 +37,21 @@ powershell -ExecutionPolicy Bypass -File .\maxrun\run_workflow_maxrun.ps1 -Runs 
 
 `codex maxrun`이라는 별도 subcommand를 가정하지 않는다. 이 프로젝트의 검증된 자동화 방식은 `codex.cmd exec --cd <root> -`에 prompt를 stdin으로 넘기는 형식이다. `codex.cmd exec --cd D:\Codex\Support (Get-Content -Raw .\workflow.md)`처럼 파일 전체를 명령 인자로 펼치면 Windows에서 "명령줄이 너무 깁니다" 오류가 날 수 있으므로 사용하지 않는다.
 
+## Change Log Rule
+
+Every run must update `change.md` before the final response. Use this compact format:
+
+```markdown
+## YYYY-MM-DD - <cycle or run name>
+
+- Problem: <what was wrong, missing, or uncertain>
+- Change: <what was changed or generated>
+- Verification: <command/result, pass/fail, or why verification was not run>
+- Next: <next focused action>
+```
+
+Do not duplicate long tables, raw ngspice output, or detailed sweep notes in `change.md`. Put those details in `progress.md`, CSV summaries, or result files.
+
 ## 0. 역할과 목표
 
 너는 `D:\Codex\Support`에서 실행되는 Codex run이다. 목표는 `3stage-bjt.md` 기반의 SKY130 3-stage NPN BJT common-emitter neural signal amplifier를 구현, 검증, 개선하는 것이다.
@@ -44,6 +63,7 @@ powershell -ExecutionPolicy Bypass -File .\maxrun\run_workflow_maxrun.ps1 -Runs 
 - 한 run에서는 하나의 문제군만 다룬다.
 - 구현, 검증, 개선을 같은 문단에서 섞지 않는다.
 - 통과한 결과만 `progress.md`에 완료로 기록한다.
+- 반복마다 핵심 문제점과 고친점은 `change.md`에 짧게 기록한다.
 - 실패한 결과는 실패 사실, 실패 파일, 다음 수정 후보를 기록한다.
 - 기존 `netlists/`와 `results/` 파일을 삭제하지 않는다.
 - 기존 사용자 변경을 되돌리지 않는다.
@@ -55,6 +75,7 @@ run 시작 직후 아래 파일과 목록을 읽는다.
 ```powershell
 Get-Content -Raw -Encoding UTF8 .\전자회로프로젝트.md
 Get-Content -Raw -Encoding UTF8 .\progress.md
+Get-Content -Raw -Encoding UTF8 .\change.md
 Get-Content -Raw -Encoding UTF8 .\3stage-bjt.md
 rg --files .\netlists .\results\ngspice
 ```
@@ -747,7 +768,7 @@ final deliverable pass 기준:
 ```powershell
 rg "bjt3_op|bjt3_ac|bjt3_tran|bjt3_load10p|device_list.csv|area_calculation.csv|power_calculation.csv|target_hs.csv|performance_summary.csv" .\progress.md .\3stage-bjt.md
 $ambiguous = @("TO"+"DO", "TB"+"D", "나"+"중", "적"+"절히", "미"+"정")
-rg ($ambiguous -join "|") .\workflow.md .\3stage-bjt.md .\progress.md
+rg ($ambiguous -join "|") .\workflow.md .\3stage-bjt.md .\progress.md .\change.md
 Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fatal|singular|error|failed"
 ```
 
@@ -769,6 +790,7 @@ Select-String .\results\ngspice\logs\bjt3*.log -Pattern "can't find|unknown|fata
 이번 run: <Cycle 이름>
 수정/생성: <파일 목록>
 검증: <실행 명령과 pass/fail 근거>
+변경 log: <change.md에 문제점/고친점/검증/다음을 기록했는지>
 결정: <accepted/rejected/next run>
 다음 run: <다음 cycle과 입력 파일>
 ```

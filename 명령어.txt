@@ -1,0 +1,3 @@
+& "C:\eda\ngspice\Spice64\bin\ngspice.exe"
+load D:/Codex/Support/results/ngspice/raw/bjt3_sweep_highcut_ch30p_ac_wide.raw
+plot gain_db xlog xlimit 1m 1Meg

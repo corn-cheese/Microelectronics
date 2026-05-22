@@ -1,0 +1,39 @@
+
+Note: Compatibility modes selected: hs a
+
+
+Circuit: * sky130 bjt 3-stage gain/headroom sweep ac candidate: re=18.5k
+
+Warning: Model issue on line 28 :
+  .model xq1:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Warning: Model issue on line 28 :
+  .model xq2:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Warning: Model issue on line 28 :
+  .model xq3:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+
+No. of Data Rows : 1
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+
+No. of Data Rows : 721
+midgain_vv          =  9.71176e+01
+midgain_db          =  3.97460e+01
+phase_1k_deg        =  3.09182e+00
+ASCII raw file "D:/Codex/Support/results/ngspice/raw/bjt3_sweep_gain_re18p5k_ac.raw"
+ngspice-46 done

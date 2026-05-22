@@ -1,0 +1,72 @@
+* SKY130 BJT 3-stage high-frequency output-isolation tran: RISO=470k, CLOAD=10p
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/models/corners/tt/nonfet.spice"
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/cells/npn_05v5/sky130_fd_pr__npn_05v5__t.corner.spice"
+
+.option savecurrents
+.option klu
+.option reltol=1e-4
+
+.param VDD=5
+.param VCM=2.5
+.param VIN_AMP=1m
+.param FIN=1k
+.param CCPL=68n
+.param CH=30p
+.param RCVAL=120k
+.param REVAL=18.5k
+.param COUT=10n
+.param ROUT=10Meg
+
+VDD vdd 0 {VDD}
+VIN vin 0 SIN({VCM} {VIN_AMP} {FIN})
+
+CIN vin b1_base {CCPL}
+
+RB1_TOP vdd b1_base 3.3Meg
+RB1_BOT b1_base 0 1Meg
+RC1 vdd b1_collector {RCVAL}
+RE1 b1_emitter 0 {REVAL}
+XQ1 b1_collector b1_base b1_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+CH1 b1_collector 0 {CH}
+
+C12 b1_collector b2_base {CCPL}
+
+RB2_TOP vdd b2_base 3.3Meg
+RB2_BOT b2_base 0 1Meg
+RC2 vdd b2_collector {RCVAL}
+RE2 b2_emitter 0 {REVAL}
+XQ2 b2_collector b2_base b2_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+CH2 b2_collector 0 {CH}
+
+C23 b2_collector b3_base {CCPL}
+
+RB3_TOP vdd b3_base 3.3Meg
+RB3_BOT b3_base 0 1Meg
+RC3 vdd b3_collector {RCVAL}
+RE3 b3_emitter 0 {REVAL}
+XQ3 b3_collector b3_base b3_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1
+CH3 b3_collector 0 {CH}
+
+COUT b3_collector vout_drv {COUT}
+ROUT_TOP vdd vout_drv {ROUT}
+ROUT_BOT vout_drv 0 {ROUT}
+RISO vout_drv vout_final 470k
+CLOAD_10P vout_final 0 10p
+
+
+.control
+set noaskquit
+set wr_singlescale
+set wr_vecnames
+op
+tran 5u 100m 0 5u
+meas tran out_max max v(vout_final) from=50m to=100m
+meas tran out_min min v(vout_final) from=50m to=100m
+meas tran vin_max max v(vin) from=50m to=100m
+meas tran vin_min min v(vin) from=50m to=100m
+wrdata D:/Codex/Support/results/ngspice/csv/bjt3_sweep_hfiso_r470k_tran.csv v(vin) v(b3_collector) v(vout_drv) v(vout_final) i(vdd)
+write D:/Codex/Support/results/ngspice/raw/bjt3_sweep_hfiso_r470k_tran.raw
+quit
+.endc
+
+.end
