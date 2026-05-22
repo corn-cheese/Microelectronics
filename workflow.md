@@ -5,19 +5,33 @@
 실행 예:
 
 ```powershell
-codex.cmd exec --cd D:\Codex\Support (Get-Content -Raw .\workflow.md)
+$OutputEncoding = New-Object System.Text.UTF8Encoding $false
+Get-Content -Raw -Encoding UTF8 .\workflow.md | codex.cmd exec --cd D:\Codex\Support -
+```
+
+권장 실행 예:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\maxrun\run_workflow_maxrun.ps1 -Runs 1
 ```
 
 반복 실행 예:
 
 ```powershell
+$OutputEncoding = New-Object System.Text.UTF8Encoding $false
 1..7 | ForEach-Object {
   Write-Host "=== workflow run $_ ===" -ForegroundColor Cyan
-  codex.cmd exec --cd D:\Codex\Support (Get-Content -Raw .\workflow.md)
+  Get-Content -Raw -Encoding UTF8 .\workflow.md | codex.cmd exec --cd D:\Codex\Support -
 }
 ```
 
-`codex maxrun`이라는 별도 subcommand를 가정하지 않는다. 이 프로젝트의 검증된 자동화 방식은 `maxrun/run_plan_maxrun.ps1`과 같은 `codex.cmd exec --cd <root> <prompt>` 형식이다.
+권장 반복 실행 예:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\maxrun\run_workflow_maxrun.ps1 -Runs 7
+```
+
+`codex maxrun`이라는 별도 subcommand를 가정하지 않는다. 이 프로젝트의 검증된 자동화 방식은 `codex.cmd exec --cd <root> -`에 prompt를 stdin으로 넘기는 형식이다. `codex.cmd exec --cd D:\Codex\Support (Get-Content -Raw .\workflow.md)`처럼 파일 전체를 명령 인자로 펼치면 Windows에서 "명령줄이 너무 깁니다" 오류가 날 수 있으므로 사용하지 않는다.
 
 ## 0. 역할과 목표
 

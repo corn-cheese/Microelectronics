@@ -1,0 +1,81 @@
+
+Note: Compatibility modes selected: hs a
+
+
+Circuit: * sky130 bjt 3-stage high-cutoff sweep noise candidate: ch=30p
+
+Warning: Model issue on line 28 :
+  .model xq1:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Warning: Model issue on line 28 :
+  .model xq2:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Warning: Model issue on line 28 :
+  .model xq3:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+No. of Data Rows : 1
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+No. of Data Rows : 481
+
+No. of Data Rows : 1
+Here are the vectors currently active:
+
+Title: * sky130 bjt 3-stage high-cutoff sweep noise candidate: ch=30p
+Name: noise1 (Noise Spectral Density Curves)
+Date: Fri May 22 20:09:32  2026
+
+    @c12[i]             : current, real, 481 long
+    @c23[i]             : current, real, 481 long
+    @ch1[i]             : current, real, 481 long
+    @ch2[i]             : current, real, 481 long
+    @ch3[i]             : current, real, 481 long
+    @cin[i]             : current, real, 481 long
+    @cload_10p[i]       : current, real, 481 long
+    @q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib]: current, real, 481 long
+    @q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic]: current, real, 481 long
+    @q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie]: current, real, 481 long
+    @q.xq1.qsky130_fd_pr__npn_05v5_w1p00l1p00[is]: current, real, 481 long
+    @q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib]: current, real, 481 long
+    @q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic]: current, real, 481 long
+    @q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie]: current, real, 481 long
+    @q.xq2.qsky130_fd_pr__npn_05v5_w1p00l1p00[is]: current, real, 481 long
+    @q.xq3.qsky130_fd_pr__npn_05v5_w1p00l1p00[ib]: current, real, 481 long
+    @q.xq3.qsky130_fd_pr__npn_05v5_w1p00l1p00[ic]: current, real, 481 long
+    @q.xq3.qsky130_fd_pr__npn_05v5_w1p00l1p00[ie]: current, real, 481 long
+    @q.xq3.qsky130_fd_pr__npn_05v5_w1p00l1p00[is]: current, real, 481 long
+    @rb1_bot[i]         : current, real, 481 long
+    @rb1_top[i]         : current, real, 481 long
+    @rb2_bot[i]         : current, real, 481 long
+    @rb2_top[i]         : current, real, 481 long
+    @rb3_bot[i]         : current, real, 481 long
+    @rb3_top[i]         : current, real, 481 long
+    @rc1[i]             : current, real, 481 long
+    @rc2[i]             : current, real, 481 long
+    @rc3[i]             : current, real, 481 long
+    @re1[i]             : current, real, 481 long
+    @re2[i]             : current, real, 481 long
+    @re3[i]             : current, real, 481 long
+    @rload_sweep[i]     : current, real, 481 long
+    frequency           : frequency, real, 481 long, grid = xlog [default scale]
+    inoise_spectrum     : voltage-density, real, 481 long
+    onoise_spectrum     : voltage-density, real, 481 long
+ASCII raw file "D:/Codex/Support/results/ngspice/raw/bjt3_sweep_highcut_ch30p_noise.raw"
+onoise_total = 9.648524e-04
+inoise_total = 2.155789e-04
+ngspice-46 done

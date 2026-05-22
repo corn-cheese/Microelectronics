@@ -1,0 +1,13 @@
+metric,value,unit,notes
+out_max,3.94969,V,Measured from 5 ms to 10 ms in bjt3_tran.log
+out_min,3.79070,V,Measured from 5 ms to 10 ms in bjt3_tran.log
+out_pp,0.15899,V,Output peak-to-peak swing
+vin_max,2.50100,V,Measured from 5 ms to 10 ms in bjt3_tran.log
+vin_min,2.49900,V,Measured from 5 ms to 10 ms in bjt3_tran.log
+vin_pp,0.00200,V,Input peak-to-peak swing from 1 mV sine
+tran_gain_vv,79.4950,V/V,out_pp divided by vin_pp
+output_center,3.870195,V,(out_max plus out_min) divided by 2
+clipping_margin_low,3.79070,V,out_min above 0 V rail
+clipping_margin_high,1.05031,V,5 V rail minus out_max
+log_scan,pass,,No can't find/unknown/fatal/singular/error/failed matches in bjt3_tran.log
+decision,pass,,Transient gate passed: 0.10 Vpp <= out_pp <= 0.30 Vpp and waveform stays away from rails

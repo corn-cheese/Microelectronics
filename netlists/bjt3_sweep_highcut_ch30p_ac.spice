@@ -1,0 +1,36 @@
+* SKY130 BJT 3-stage high-cutoff sweep AC candidate: CH=30p
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/models/corners/tt/nonfet.spice"
+.include "C:/eda/sky130/skywater-pdk-libs-sky130_fd_pr/cells/npn_05v5/sky130_fd_pr__npn_05v5__t.corner.spice"
+
+.option savecurrents
+.option klu
+.option reltol=1e-4
+
+.param VDD=5
+.param VCM=2.5
+.param CH=30p
+
+VDD vdd 0 {VDD}
+VIN vin 0 DC {VCM} AC 1
+
+.include "D:/Codex/Support/netlists/bjt3_sweep_highcut_core.inc"
+
+.control
+set noaskquit
+set wr_singlescale
+set wr_vecnames
+op
+ac dec 80 1 1Meg
+let gain = v(vout_final)/v(vin)
+let gain_vv = mag(gain)
+let gain_db = db(gain)
+let phase_deg = ph(gain)
+meas ac midgain_vv find gain_vv at=1000
+meas ac midgain_db find gain_db at=1000
+meas ac phase_1k_deg find phase_deg at=1000
+wrdata D:/Codex/Support/results/ngspice/csv/bjt3_sweep_highcut_ch30p_ac.csv gain_vv gain_db phase_deg
+write D:/Codex/Support/results/ngspice/raw/bjt3_sweep_highcut_ch30p_ac.raw frequency v(vin) v(vout_final) gain gain_vv gain_db phase_deg
+quit
+.endc
+
+.end

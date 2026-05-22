@@ -1,0 +1,248 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="980" viewBox="0 0 1800 980">
+  <defs>
+    <style>
+      .wire { stroke: #222; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .thin { stroke: #222; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .device { stroke: #111; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .node { fill: #222; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 19px; fill: #111; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 15px; fill: #333; }
+      .value { font-family: Arial, Helvetica, sans-serif; font-size: 16px; fill: #444; }
+      .title { font-family: Arial, Helvetica, sans-serif; font-size: 30px; font-weight: 700; fill: #111; }
+      .supply { font-family: Arial, Helvetica, sans-serif; font-size: 19px; font-weight: 700; fill: #111; }
+      .stage-title { font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; fill: #0b3a6f; }
+      .note { font-family: Arial, Helvetica, sans-serif; font-size: 14px; fill: #555; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="980" fill="#ffffff"/>
+  <text x="48" y="54" class="title">SKY130 3-Stage BJT Common-Emitter Amplifier Schematic</text>
+  <text x="48" y="84" class="small">Source: netlists/bjt3_sweep_highcut_core.inc with CH=30p, VDD=5 V, VIN=2.5 V common-mode + small signal</text>
+
+  <!-- Rails -->
+  <line x1="80" y1="125" x2="1710" y2="125" class="wire"/>
+  <text x="1728" y="132" class="supply">VDD = 5 V</text>
+  <line x1="80" y1="875" x2="1710" y2="875" class="wire"/>
+  <text x="1728" y="882" class="supply">GND</text>
+
+  <!-- Input source -->
+  <circle cx="120" cy="430" r="42" class="device"/>
+  <line x1="120" y1="388" x2="120" y2="335" class="wire"/>
+  <line x1="120" y1="472" x2="120" y2="875" class="wire"/>
+  <line x1="100" y1="415" x2="140" y2="415" class="thin"/>
+  <line x1="120" y1="395" x2="120" y2="435" class="thin"/>
+  <text x="81" y="424" class="label">VIN</text>
+  <text x="52" y="498" class="small">AC: 1 V small signal</text>
+  <text x="52" y="519" class="small">TRAN: 2.5 V + 1 mV @ 1 kHz</text>
+
+  <!-- Input coupling capacitor -->
+  <line x1="120" y1="335" x2="240" y2="335" class="wire"/>
+  <line x1="240" y1="305" x2="240" y2="365" class="device"/>
+  <line x1="264" y1="305" x2="264" y2="365" class="device"/>
+  <line x1="264" y1="335" x2="330" y2="335" class="wire"/>
+  <text x="218" y="292" class="label">CIN</text>
+  <text x="226" y="392" class="value">1u</text>
+
+  <!-- Stage 1 -->
+  <text x="365" y="168" class="stage-title">Stage 1 CE</text>
+  <line x1="360" y1="125" x2="360" y2="195" class="wire"/>
+  <polyline points="360,195 342,207 378,231 342,255 378,279 342,303 360,327" class="device"/>
+  <line x1="360" y1="327" x2="360" y2="445" class="wire"/>
+  <polyline points="360,445 342,457 378,481 342,505 378,529 342,553 360,580" class="device"/>
+  <line x1="360" y1="580" x2="360" y2="875" class="wire"/>
+  <circle cx="360" cy="335" r="6" class="node"/>
+  <text x="382" y="230" class="label">RB1_TOP</text>
+  <text x="382" y="253" class="value">3.3Meg</text>
+  <text x="382" y="500" class="label">RB1_BOT</text>
+  <text x="382" y="523" class="value">1Meg</text>
+  <text x="286" y="326" class="small">b1_base</text>
+
+  <line x1="535" y1="125" x2="535" y2="195" class="wire"/>
+  <polyline points="535,195 517,207 553,231 517,255 553,279 517,303 535,335" class="device"/>
+  <text x="555" y="239" class="label">RC1</text>
+  <text x="555" y="262" class="value">120k</text>
+  <circle cx="535" cy="335" r="6" class="node"/>
+  <text x="552" y="326" class="small">b1_collector</text>
+
+  <circle cx="500" cy="500" r="63" class="device"/>
+  <line x1="450" y1="435" x2="450" y2="565" class="device"/>
+  <line x1="360" y1="335" x2="450" y2="450" class="wire"/>
+  <line x1="450" y1="455" x2="503" y2="410" class="device"/>
+  <line x1="503" y1="410" x2="535" y2="335" class="wire"/>
+  <line x1="450" y1="545" x2="503" y2="590" class="device"/>
+  <line x1="503" y1="590" x2="535" y2="655" class="wire"/>
+  <polyline points="486,582 510,598 497,570" class="device"/>
+  <text x="481" y="502" class="label">Q1</text>
+  <text x="433" y="586" class="small">npn_05v5</text>
+
+  <circle cx="535" cy="655" r="6" class="node"/>
+  <text x="552" y="666" class="small">b1_emitter</text>
+  <line x1="535" y1="655" x2="535" y2="690" class="wire"/>
+  <polyline points="535,690 517,702 553,726 517,750 553,774 517,798 535,832" class="device"/>
+  <line x1="535" y1="832" x2="535" y2="875" class="wire"/>
+  <text x="555" y="742" class="label">RE1</text>
+  <text x="555" y="765" class="value">20k</text>
+
+  <line x1="535" y1="335" x2="630" y2="335" class="wire"/>
+  <line x1="630" y1="335" x2="630" y2="505" class="wire"/>
+  <line x1="610" y1="505" x2="650" y2="505" class="device"/>
+  <line x1="610" y1="530" x2="650" y2="530" class="device"/>
+  <line x1="630" y1="530" x2="630" y2="875" class="wire"/>
+  <text x="651" y="503" class="label">CH1</text>
+  <text x="651" y="526" class="value">30p</text>
+
+  <!-- Interstage capacitor C12 -->
+  <line x1="630" y1="335" x2="715" y2="335" class="wire"/>
+  <line x1="715" y1="305" x2="715" y2="365" class="device"/>
+  <line x1="739" y1="305" x2="739" y2="365" class="device"/>
+  <line x1="739" y1="335" x2="815" y2="335" class="wire"/>
+  <text x="695" y="292" class="label">C12</text>
+  <text x="704" y="392" class="value">1u</text>
+
+  <!-- Stage 2 -->
+  <text x="850" y="168" class="stage-title">Stage 2 CE</text>
+  <line x1="845" y1="125" x2="845" y2="195" class="wire"/>
+  <polyline points="845,195 827,207 863,231 827,255 863,279 827,303 845,327" class="device"/>
+  <line x1="845" y1="327" x2="845" y2="445" class="wire"/>
+  <polyline points="845,445 827,457 863,481 827,505 863,529 827,553 845,580" class="device"/>
+  <line x1="845" y1="580" x2="845" y2="875" class="wire"/>
+  <circle cx="845" cy="335" r="6" class="node"/>
+  <text x="867" y="230" class="label">RB2_TOP</text>
+  <text x="867" y="253" class="value">3.3Meg</text>
+  <text x="867" y="500" class="label">RB2_BOT</text>
+  <text x="867" y="523" class="value">1Meg</text>
+  <text x="771" y="326" class="small">b2_base</text>
+
+  <line x1="1020" y1="125" x2="1020" y2="195" class="wire"/>
+  <polyline points="1020,195 1002,207 1038,231 1002,255 1038,279 1002,303 1020,335" class="device"/>
+  <text x="1040" y="239" class="label">RC2</text>
+  <text x="1040" y="262" class="value">120k</text>
+  <circle cx="1020" cy="335" r="6" class="node"/>
+  <text x="1037" y="326" class="small">b2_collector</text>
+
+  <circle cx="985" cy="500" r="63" class="device"/>
+  <line x1="935" y1="435" x2="935" y2="565" class="device"/>
+  <line x1="845" y1="335" x2="935" y2="450" class="wire"/>
+  <line x1="935" y1="455" x2="988" y2="410" class="device"/>
+  <line x1="988" y1="410" x2="1020" y2="335" class="wire"/>
+  <line x1="935" y1="545" x2="988" y2="590" class="device"/>
+  <line x1="988" y1="590" x2="1020" y2="655" class="wire"/>
+  <polyline points="971,582 995,598 982,570" class="device"/>
+  <text x="966" y="502" class="label">Q2</text>
+  <text x="918" y="586" class="small">npn_05v5</text>
+
+  <circle cx="1020" cy="655" r="6" class="node"/>
+  <text x="1037" y="666" class="small">b2_emitter</text>
+  <line x1="1020" y1="655" x2="1020" y2="690" class="wire"/>
+  <polyline points="1020,690 1002,702 1038,726 1002,750 1038,774 1002,798 1020,832" class="device"/>
+  <line x1="1020" y1="832" x2="1020" y2="875" class="wire"/>
+  <text x="1040" y="742" class="label">RE2</text>
+  <text x="1040" y="765" class="value">20k</text>
+
+  <line x1="1020" y1="335" x2="1115" y2="335" class="wire"/>
+  <line x1="1115" y1="335" x2="1115" y2="505" class="wire"/>
+  <line x1="1095" y1="505" x2="1135" y2="505" class="device"/>
+  <line x1="1095" y1="530" x2="1135" y2="530" class="device"/>
+  <line x1="1115" y1="530" x2="1115" y2="875" class="wire"/>
+  <text x="1136" y="503" class="label">CH2</text>
+  <text x="1136" y="526" class="value">30p</text>
+
+  <!-- Interstage capacitor C23 -->
+  <line x1="1115" y1="335" x2="1200" y2="335" class="wire"/>
+  <line x1="1200" y1="305" x2="1200" y2="365" class="device"/>
+  <line x1="1224" y1="305" x2="1224" y2="365" class="device"/>
+  <line x1="1224" y1="335" x2="1300" y2="335" class="wire"/>
+  <text x="1180" y="292" class="label">C23</text>
+  <text x="1189" y="392" class="value">1u</text>
+
+  <!-- Stage 3 -->
+  <text x="1335" y="168" class="stage-title">Stage 3 CE</text>
+  <line x1="1330" y1="125" x2="1330" y2="195" class="wire"/>
+  <polyline points="1330,195 1312,207 1348,231 1312,255 1348,279 1312,303 1330,327" class="device"/>
+  <line x1="1330" y1="327" x2="1330" y2="445" class="wire"/>
+  <polyline points="1330,445 1312,457 1348,481 1312,505 1348,529 1312,553 1330,580" class="device"/>
+  <line x1="1330" y1="580" x2="1330" y2="875" class="wire"/>
+  <circle cx="1330" cy="335" r="6" class="node"/>
+  <text x="1352" y="230" class="label">RB3_TOP</text>
+  <text x="1352" y="253" class="value">3.3Meg</text>
+  <text x="1352" y="500" class="label">RB3_BOT</text>
+  <text x="1352" y="523" class="value">1Meg</text>
+  <text x="1256" y="326" class="small">b3_base</text>
+
+  <line x1="1505" y1="125" x2="1505" y2="195" class="wire"/>
+  <polyline points="1505,195 1487,207 1523,231 1487,255 1523,279 1487,303 1505,335" class="device"/>
+  <text x="1525" y="239" class="label">RC3</text>
+  <text x="1525" y="262" class="value">120k</text>
+  <circle cx="1505" cy="335" r="6" class="node"/>
+  <text x="1522" y="326" class="small">b3_collector</text>
+
+  <circle cx="1470" cy="500" r="63" class="device"/>
+  <line x1="1420" y1="435" x2="1420" y2="565" class="device"/>
+  <line x1="1330" y1="335" x2="1420" y2="450" class="wire"/>
+  <line x1="1420" y1="455" x2="1473" y2="410" class="device"/>
+  <line x1="1473" y1="410" x2="1505" y2="335" class="wire"/>
+  <line x1="1420" y1="545" x2="1473" y2="590" class="device"/>
+  <line x1="1473" y1="590" x2="1505" y2="655" class="wire"/>
+  <polyline points="1456,582 1480,598 1467,570" class="device"/>
+  <text x="1451" y="502" class="label">Q3</text>
+  <text x="1403" y="586" class="small">npn_05v5</text>
+
+  <circle cx="1505" cy="655" r="6" class="node"/>
+  <text x="1522" y="666" class="small">b3_emitter</text>
+  <line x1="1505" y1="655" x2="1505" y2="690" class="wire"/>
+  <polyline points="1505,690 1487,702 1523,726 1487,750 1523,774 1487,798 1505,832" class="device"/>
+  <line x1="1505" y1="832" x2="1505" y2="875" class="wire"/>
+  <text x="1525" y="742" class="label">RE3</text>
+  <text x="1525" y="765" class="value">20k</text>
+
+  <line x1="1505" y1="335" x2="1600" y2="335" class="wire"/>
+  <line x1="1600" y1="335" x2="1600" y2="505" class="wire"/>
+  <line x1="1580" y1="505" x2="1620" y2="505" class="device"/>
+  <line x1="1580" y1="530" x2="1620" y2="530" class="device"/>
+  <line x1="1600" y1="530" x2="1600" y2="875" class="wire"/>
+  <text x="1621" y="503" class="label">CH3</text>
+  <text x="1621" y="526" class="value">30p</text>
+
+  <!-- Output alias and load -->
+  <line x1="1600" y1="335" x2="1685" y2="335" class="wire"/>
+  <circle cx="1685" cy="335" r="6" class="node"/>
+  <text x="1668" y="303" class="label">VOUT</text>
+  <text x="1634" y="326" class="small">vout_final</text>
+
+  <line x1="1685" y1="335" x2="1685" y2="450" class="wire"/>
+  <line x1="1665" y1="450" x2="1705" y2="450" class="device"/>
+  <line x1="1665" y1="475" x2="1705" y2="475" class="device"/>
+  <line x1="1685" y1="475" x2="1685" y2="605" class="wire"/>
+  <text x="1715" y="449" class="label">CLOAD</text>
+  <text x="1715" y="472" class="value">10p</text>
+
+  <polyline points="1685,605 1667,617 1703,641 1667,665 1703,689 1667,713 1685,740" class="device"/>
+  <line x1="1685" y1="740" x2="1685" y2="875" class="wire"/>
+  <text x="1715" y="657" class="label">RLOAD</text>
+  <text x="1715" y="680" class="value">1G</text>
+
+  <!-- Ground symbols at representative shunts -->
+  <line x1="120" y1="875" x2="120" y2="895" class="wire"/>
+  <line x1="95" y1="895" x2="145" y2="895" class="wire"/>
+  <line x1="103" y1="908" x2="137" y2="908" class="wire"/>
+  <line x1="112" y1="921" x2="128" y2="921" class="wire"/>
+
+  <line x1="630" y1="875" x2="630" y2="895" class="wire"/>
+  <line x1="605" y1="895" x2="655" y2="895" class="wire"/>
+  <line x1="613" y1="908" x2="647" y2="908" class="wire"/>
+  <line x1="622" y1="921" x2="638" y2="921" class="wire"/>
+
+  <line x1="1115" y1="875" x2="1115" y2="895" class="wire"/>
+  <line x1="1090" y1="895" x2="1140" y2="895" class="wire"/>
+  <line x1="1098" y1="908" x2="1132" y2="908" class="wire"/>
+  <line x1="1107" y1="921" x2="1123" y2="921" class="wire"/>
+
+  <line x1="1685" y1="875" x2="1685" y2="895" class="wire"/>
+  <line x1="1660" y1="895" x2="1710" y2="895" class="wire"/>
+  <line x1="1668" y1="908" x2="1702" y2="908" class="wire"/>
+  <line x1="1677" y1="921" x2="1693" y2="921" class="wire"/>
+
+  <!-- Notes -->
+  <rect x="48" y="935" width="1080" height="1" fill="#dddddd"/>
+  <text x="48" y="960" class="note">Coupling capacitors CIN/C12/C23 create the low-frequency high-pass side; CH1/CH2/CH3 and CLOAD create the high-frequency roll-off side.</text>
+</svg>

@@ -1,0 +1,13 @@
+﻿metric,value,unit,notes
+unloaded_midgain_db,38.0084,dB,From results/ngspice/tables/bjt3_ac_summary.csv
+loaded_midgain_db,38.0081374,dB,Measured at 1 kHz from bjt3_load10p_ac.csv/log
+load_gain_delta_db,-0.0002626,dB,Loaded minus unloaded midgain; less than 3 dB loss
+unloaded_upper_cutoff_hz,>1000000,Hz,Unloaded bjt3_ac had no -3 dB high-frequency crossing through 1 MHz
+loaded_upper_cutoff_hz,131916.53,Hz,Interpolated -3 dB crossing relative to 1 kHz loaded gain
+upper_cutoff_delta_hz,not_computable,,Unloaded value is a lower bound rather than a finite crossing
+loaded_out_pp,0.15898,V,From bjt3_load10p_tran.log out_max-out_min
+loaded_output_center,3.87020,V,From bjt3_load10p_tran.log average of out_max/out_min
+ringing_or_clipping,none_observed,,Output remains between 3.79071 V and 3.94969 V for 5 ms to 10 ms
+log_scan_ac,pass,,No can't find/unknown/fatal/singular/error/failed matches in bjt3_load10p_ac.log
+log_scan_tran,pass,,No can't find/unknown/fatal/singular/error/failed matches in bjt3_load10p_tran.log
+decision,pass,,10 pF load gate passed: gain loss is negligible and upper cutoff remains above 20 kHz

@@ -242,3 +242,51 @@ All project.md content checks passed (12/12).
 - 3-stage CE 출력은 입력 대비 반전되므로 target phase/transient 비교에 180도 반전을 포함한다.
 - 10 Hz lower cutoff를 위한 큰 capacitor는 area penalty가 크므로 R-C pole과 PPA를 함께 비교해야 한다.
 - `10 pF` load는 CE3 output pole을 크게 바꿀 수 있으므로 loaded/unloaded 비교를 필수로 남긴다.
+
+## 2026-05-22 - workflow Cycle A
+
+- 구현: `3stage-bjt.md`를 1-stage/2-stage 검증 결과 기준으로 보정했다.
+- 검증: baseline 값, direct include, 4-pin NPN subckt, unloaded/load 분리 gate를 문서에서 확인했다.
+- 개선 결정: 다음 run은 `bjt3_op.spice` 생성과 DC operating point 검증이다.
+
+## 2026-05-22 - workflow Cycle B
+
+- 구현: `netlists/bjt3_op.spice`를 생성하고 3-stage CE 구조를 `RC=100k`, `RE=20k`, `RB_TOP=330k`, `RB_BOT=100k`, `C12=1u`, `C23=1u` baseline으로 구성했다.
+- 검증: ngspice exit code `0`, 공통 로그 검증 match 없음. stage 1/2/3 `VBE`는 모두 약 `0.793688 V`, `VCE`는 `3.030645 V`, `3.030645 V`, `3.030309 V`로 DC gate를 통과했다.
+- 개선 결정: 다음 run은 `bjt3_ac.spice` 생성과 unloaded AC gain/bandwidth 검증이다.
+
+## 2026-05-22 - workflow Cycle C
+
+- 구현: `netlists/bjt3_ac.spice`를 생성하고 통과한 `bjt3_op.spice` bias 값에 `CIN=1u`, `C12=1u`, `C23=1u`, unloaded `RLOAD_AC=1G`를 적용했다.
+- 검증: ngspice exit code `0`, 공통 로그 검증 match 없음. `results/ngspice/tables/bjt3_ac_summary.csv`에서 1 kHz gain은 `15.3274344 V/V`, `23.7093893 dB`로 Cycle C gate `35 dB <= midgain_db <= 45 dB`를 통과하지 못했다.
+- 개선 결정: 문제군은 `ac_gain_bandwidth`이다. 다음 run은 interstage AC loading을 줄이는 한 가지 후보로 `RB_TOP/RB_BOT` 비율은 유지하고 divider impedance scale만 키운 `bjt3_ac` 개선 검증을 수행한다.
+
+## 2026-05-22 - workflow Cycle C improvement
+
+- 구현: `netlists/bjt3_ac.spice`에서 `RB_TOP/RB_BOT` 비율을 유지한 채 각 stage divider를 `3.3Meg/1Meg`로 10배 키웠다.
+- 검증: ngspice exit code `0`, 공통 로그 검증 match 없음. 1 kHz gain은 `49.7843 V/V`, `33.9418 dB`로 기존 `23.7093893 dB`보다 개선됐지만 Cycle C gate `35 dB <= midgain_db <= 45 dB`에는 미달했다.
+- 개선 결정: 문제군은 계속 `ac_gain_bandwidth`이다. 다음 run은 divider scale을 추가로 반복하지 말고 `RC/RE` gain-headroom family 중 하나만 선택해 1 kHz gain을 35 dB 이상으로 올리는 후보를 검증한다.
+
+## 2026-05-22 - workflow Cycle C improvement
+
+- 구현: `netlists/bjt3_ac.spice`에서 직전 `3.3Meg/1Meg` divider 개선을 유지하고, `RC/RE` gain-headroom family 중 `RC`만 `100k`에서 `120k`로 올렸다.
+- 검증: ngspice exit code `0`, 공통 로그 검증 match 없음. 1 kHz gain은 `79.5095 V/V`, `38.0084 dB`, phase는 `-3.14071 deg`로 Cycle C gate `35 dB <= midgain_db <= 45 dB`를 통과했다. 10 Hz to 20 kHz ripple은 `0.0144342 dB`이다.
+- 개선 결정: `bjt3_ac` unloaded AC 후보를 accepted로 둔다. 다음 run은 이 후보를 기준으로 `bjt3_tran.spice` 생성과 unloaded transient 검증이다.
+
+## 2026-05-22 - workflow Cycle D
+
+- 구현: `netlists/bjt3_tran.spice`를 생성하고 통과한 `bjt3_ac.spice` 후보값인 `RB_TOP/RB_BOT=3.3Meg/1Meg`, `RC=120k`, `RE=20k`, `CIN/C12/C23=1u`를 그대로 적용했다.
+- 검증: ngspice exit code `0`, 공통 로그 검증 match 없음. `results/ngspice/tables/bjt3_tran_summary.csv`에서 `vin_pp=0.00200 V`, `out_pp=0.15899 V`, transient gain은 `79.4950 V/V`, 출력 중심은 `3.870195 V`로 transient gate를 통과했다.
+- 개선 결정: `bjt3_tran` unloaded transient 후보를 accepted로 둔다. 다음 run은 `bjt3_load10p_ac.spice`와 `bjt3_load10p_tran.spice` 생성 및 10 pF load 비교 검증이다.
+
+## 2026-05-22 - workflow Cycle E
+
+- 구현: `netlists/bjt3_load10p_ac.spice`와 `netlists/bjt3_load10p_tran.spice`를 생성하고 final output node에만 `CLOAD_10P=10p`를 추가했다.
+- 검증: 두 ngspice 실행 모두 exit code `0`, 공통 로그 검증 match 없음. loaded 1 kHz gain은 `38.0081374 dB`, unloaded 대비 gain delta는 `-0.0002626 dB`, loaded upper cutoff는 약 `131916.53 Hz`이며 transient는 `out_pp=0.15898 V`, 출력 중심 `3.87020 V`로 load gate를 통과했다.
+- 개선 결정: 10 pF load 후보를 accepted로 둔다. 다음 run은 통과한 baseline에서 한 가지 family만 선택하는 Cycle F parameter sweep이다.
+
+## 2026-05-22 - workflow Cycle F
+
+- 구현: `high_cutoff_shape` family만 선택해 `netlists/bjt3_sweep_highcut_core.inc`와 `CH=22p/30p/39p` AC/transient sweep netlist를 생성했다.
+- 검증: 6개 ngspice 실행 모두 exit code `0`, `bjt3_sweep_highcut_ch*.log` 공통 로그 검증 match 없음. `results/ngspice/tables/bjt3_sweep_summary.csv`에서 `CH=30p` 후보가 `midgain=38.001764 dB`, `upper_cutoff=23005.02 Hz`, `out_pp=0.158871 V`, `load_gain_delta=-0.006636 dB`로 accepted이다.
+- 개선 결정: final candidate는 `bjt3_sweep_highcut_ch30p_ac/tran`이다. 다음 run은 Cycle G final metrics and deliverables 생성이다.
