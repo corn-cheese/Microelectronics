@@ -1,6 +1,12 @@
 # Generated ngspice bulk outputs
 results/ngspice/raw/
 results/ngspice/raw_tmp/
-results/ngspice/csv/
+results/ngspice/csv/*
 results/ngspice/csv_tmp/
+
+# Keep final best candidate CSVs for reproducible plotting.
+!results/ngspice/csv/bjt2_autotopo_ceopr_rc125k_re4p05k_rb4p7m_c68n_cout10n_ch27p_r11k_c180p_ft175k_ac.csv
+!results/ngspice/csv/bjt2_autotopo_ceopr_rc125k_re4p05k_rb4p7m_c68n_cout10n_ch27p_r11k_c180p_ft175k_noise_10hz_20khz.csv
+!results/ngspice/csv/bjt2_autotopo_ceopr_rc125k_re4p05k_rb4p7m_c68n_cout10n_ch27p_r11k_c180p_ft175k_noise_10hz_20khz_total.csv
+!results/ngspice/csv/bjt2_autotopo_ceopr_rc125k_re4p05k_rb4p7m_c68n_cout10n_ch27p_r11k_c180p_ft175k_tran.csv
 
