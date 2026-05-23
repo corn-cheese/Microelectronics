@@ -12,6 +12,7 @@ This file is the target checklist for future simulation and tuning runs. Read it
 - Load capacitor: 10 pF
 - Output: ideally centered around 2.5 V common-mode, unless output coupling and rebias are documented
 - Out-of-band signal and noise suppression should be documented
+- PPA area priority: if the required gain, bandwidth, load stability, and rolloff can still be met, prefer removing or reducing large coupling capacitors over removing the OPAMP first. Large coupling capacitors dominate the current area model.
 
 ## Current Candidate
 
@@ -49,15 +50,18 @@ Current accepted performance candidate:
 
 - Gain is about 0.46 dB below the 40 dB target after output rebias and fallback filtering.
 - Output coupling/rebias PPA is now documented for one 10 nF capacitor and two 10 MOhm resistors, but the capacitor area remains the dominant PPA cost.
+- The 3-stage baseline uses three large input/interstage coupling capacitors (`CIN`, `C12`, `C23`). A 2-stage BJT topology should be explored specifically because it can remove one large interstage coupling capacitor if performance remains acceptable.
+- Do not shrink or remove coupling capacitors blindly. Pair any large-coupling-cap reduction with the required resistance/bias changes, then verify lower cutoff, noise, operating point sensitivity, transient settling, and PPA area.
 - Low-frequency rolloff improved but still does not fully reach 80 dB/dec in the practical low-frequency skirt near cutoff. With COUT=10 nF and ROUT_TOP || ROUT_BOT about 5 MOhm, the output pole is about 3.18 Hz; measured slopes are about +72.51 dB/dec from 0.316 Hz to 3.162 Hz and +49.26 dB/dec from 1 Hz to 10 Hz.
 - The load-buffer/filter fallback meets the far high-frequency hard-target proxy, but it adds an ideal OPAMP model whose noise is not included and raises worst power by about 70.0 uW versus the BJT-only candidate.
 - The BJT-only candidate `bjt3_sweep_coutalign_c10n` remains the low-power reference: worst power about 165.862 uW, area about 2.648e8 p, AC nRMSE about 0.16014, and far high-frequency slope about -57.06 dB/dec.
 
 ## Next Sweep Priority
 
-1. Final integration review for `bjt3_sweep_hfbuf_r10k_c150p` is complete as of 2026-05-22: required CSVs, plots, log scans, area, power, row counts, and `bjt3_final_candidate_comparison.csv` are internally consistent.
-2. Prepare presentation/submission materials and state the trade-off explicitly: use `bjt3_sweep_hfbuf_r10k_c150p` when the 80 dB/dec high-frequency proxy is mandatory; use `bjt3_sweep_coutalign_c10n` if lowest power and no ideal OPAMP fallback is preferred.
-3. If lower-skirt 80 dB/dec is later treated as a hard target, evaluate COUT/ROUT together as a new output-rebias family run.
+1. For the 2BJT branch, optimize area by testing whether one large interstage coupling capacitor can be removed through the 2-stage topology.
+2. After topology removal, sweep `CIN`, `C12`, and `COUT` with matching resistance/bias changes to find the point where capacitor-area reduction is larger than resistor-area increase.
+3. Keep the OPAMP buffer/filter unless a no-OPAMP candidate can still meet load stability and high-frequency rolloff; the OPAMP area is small compared with the large coupling capacitors.
+4. Compare every 2BJT candidate against `bjt3_sweep_hfbuf_r10k_c150p` and `bjt3_sweep_coutalign_c10n` using area, power, AC nRMSE, transient nRMSE, gain error, bandwidth, and far rolloff.
 
 ## Acceptance Criteria
 
@@ -70,6 +74,7 @@ A candidate is acceptable only if:
 - Bias remains in active region.
 - Noise is simulated and documented.
 - Output common-mode is either near 2.5 V or corrected/explained with output coupling.
+- Any removal or reduction of large coupling capacitors must be backed by fresh AC/transient/noise verification and a PPA area comparison.
 
 ## Logging Rule
 

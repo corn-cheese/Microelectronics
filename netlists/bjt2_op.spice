@@ -41,7 +41,7 @@ print v(b1_base)-v(b1_emitter) v(b1_collector)-v(b1_emitter)
 print v(b2_base)-v(b2_emitter) v(b2_collector)-v(b2_emitter)
 print v(b1_collector)-v(b2_base)
 print i(vdd)
-write D:/Codex/Support/results/ngspice/raw/bjt2_op.raw
+write D:/Codex/Support/Microelectronics-2stage/results/ngspice/raw/bjt2_op.raw
 quit
 .endc
 

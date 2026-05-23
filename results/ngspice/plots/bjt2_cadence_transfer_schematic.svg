@@ -1,0 +1,354 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1700" viewBox="0 0 2600 1700" role="img" aria-labelledby="title desc">
+  <title id="title">Cadence transfer schematic for accepted 2BJT PPA design</title>
+  <desc id="desc">Cadence-oriented detailed schematic for bjt2_sweep_ppa_rc120k_re3p9k_rb4p7m_c68n_cout10n_ch22p_r10k_c220p_ft250k. Includes nodes, instance names, pin order, values, models, buffer model, filter, load, performance, and PPA geometry notes.</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfcfb; }
+      .panel { fill: #ffffff; stroke: #c7d1cc; stroke-width: 2; }
+      .stageA { fill: #edf7f5; stroke: #5a9a8e; stroke-width: 2; }
+      .stageB { fill: #fff5e8; stroke: #be8747; stroke-width: 2; }
+      .stageC { fill: #f2f0fb; stroke: #7668a9; stroke-width: 2; }
+      .rail { stroke: #111817; stroke-width: 4; fill: none; stroke-linecap: round; }
+      .wire { stroke: #17211e; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .thin { stroke: #17211e; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .dev { stroke: #111817; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .cap { stroke: #236f9b; stroke-width: 4; fill: none; stroke-linecap: round; }
+      .src { stroke: #111817; stroke-width: 3; fill: #ffffff; }
+      .node { fill: #111817; }
+      .pin { fill: #ffffff; stroke: #111817; stroke-width: 2; }
+      .title { font-family: Arial, Helvetica, sans-serif; font-size: 34px; font-weight: 700; fill: #111817; }
+      .subtitle { font-family: Arial, Helvetica, sans-serif; font-size: 17px; fill: #4a5753; }
+      .section { font-family: Arial, Helvetica, sans-serif; font-size: 21px; font-weight: 700; fill: #111817; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 17px; font-weight: 700; fill: #111817; }
+      .value { font-family: Arial, Helvetica, sans-serif; font-size: 15px; fill: #28322f; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #46524f; }
+      .tiny { font-family: Arial, Helvetica, sans-serif; font-size: 12px; fill: #596662; }
+      .mono { font-family: Consolas, "Courier New", monospace; font-size: 13px; fill: #1f2926; }
+      .monoSmall { font-family: Consolas, "Courier New", monospace; font-size: 12px; fill: #27322f; }
+      .tableHead { fill: #e8efec; }
+      .tableLine { stroke: #d5ded9; stroke-width: 1; }
+      .callout { fill: #f7faf8; stroke: #c9d4ce; stroke-width: 1.5; }
+      .cadence { fill: #fff7d7; stroke: #b79424; stroke-width: 1.5; }
+      .arrow { marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="11" markerHeight="8" refX="10" refY="4" orient="auto">
+      <polygon points="0 0, 11 4, 0 8" fill="#17211e"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="2600" height="1700" class="bg"/>
+
+  <text x="60" y="58" class="title">Cadence Transfer Schematic - Accepted 2BJT PPA Design</text>
+  <text x="60" y="88" class="subtitle">Version: bjt2_sweep_ppa_rc120k_re3p9k_rb4p7m_c68n_cout10n_ch22p_r10k_c220p_ft250k</text>
+  <text x="60" y="114" class="subtitle">Primary source: netlists/bjt2_sweep_ppa_rc120k_re3p9k_rb4p7m_c68n_cout10n_ch22p_r10k_c220p_ft250k_ac.spice</text>
+
+  <rect x="55" y="138" width="2490" height="832" class="panel"/>
+  <rect x="78" y="178" width="560" height="740" class="stageA"/>
+  <rect x="662" y="178" width="560" height="740" class="stageB"/>
+  <rect x="1246" y="178" width="1275" height="740" class="stageC"/>
+
+  <text x="100" y="212" class="section">Stage 1: common emitter</text>
+  <text x="684" y="212" class="section">Stage 2: common emitter</text>
+  <text x="1268" y="212" class="section">Output rebias, ideal buffer, 2-pole LPF</text>
+
+  <line x1="100" y1="252" x2="2505" y2="252" class="rail"/>
+  <text x="2400" y="238" class="label">vdd = 5 V</text>
+  <line x1="100" y1="884" x2="2505" y2="884" class="rail"/>
+  <text x="2400" y="914" class="label">0 / GND</text>
+
+  <!-- Input source -->
+  <circle cx="130" cy="570" r="42" class="src"/>
+  <line x1="110" y1="570" x2="150" y2="570" class="thin"/>
+  <line x1="130" y1="550" x2="130" y2="590" class="thin"/>
+  <line x1="130" y1="528" x2="130" y2="360" class="wire"/>
+  <line x1="130" y1="612" x2="130" y2="884" class="wire"/>
+  <text x="96" y="516" class="label">VIN</text>
+  <text x="84" y="640" class="value">vin 0</text>
+  <text x="84" y="662" class="value">DC 2.5 V, AC 1 V</text>
+  <circle cx="130" cy="360" r="5" class="node"/>
+  <text x="88" y="342" class="small">vin</text>
+  <line x1="130" y1="360" x2="206" y2="360" class="wire arrow"/>
+
+  <!-- CIN -->
+  <line x1="218" y1="318" x2="218" y2="402" class="cap"/>
+  <line x1="250" y1="318" x2="250" y2="402" class="cap"/>
+  <line x1="250" y1="360" x2="332" y2="360" class="wire arrow"/>
+  <text x="203" y="302" class="label">CIN</text>
+  <text x="190" y="430" class="value">68 nF</text>
+  <text x="176" y="450" class="tiny">vin - b1_base</text>
+
+  <!-- Stage 1 bias divider -->
+  <line x1="335" y1="252" x2="335" y2="294" class="wire"/>
+  <polyline points="335,294 315,308 355,334 315,360 355,386 315,412 335,426" class="dev"/>
+  <line x1="335" y1="426" x2="335" y2="486" class="wire"/>
+  <polyline points="335,486 315,500 355,526 315,552 355,578 315,604 335,618" class="dev"/>
+  <line x1="335" y1="618" x2="335" y2="884" class="wire"/>
+  <circle cx="335" cy="360" r="6" class="node"/>
+  <text x="365" y="335" class="label">RB1_TOP</text>
+  <text x="365" y="357" class="value">4.7 Mohm</text>
+  <text x="365" y="379" class="small">vdd - b1_base</text>
+  <text x="365" y="540" class="label">RB1_BOT</text>
+  <text x="365" y="562" class="value">1 Mohm</text>
+  <text x="365" y="584" class="small">b1_base - 0</text>
+  <text x="354" y="363" class="small">b1_base</text>
+
+  <!-- Stage 1 transistor and loads -->
+  <line x1="520" y1="252" x2="520" y2="294" class="wire"/>
+  <polyline points="520,294 500,308 540,334 500,360 540,386 500,412 520,426" class="dev"/>
+  <line x1="520" y1="426" x2="520" y2="478" class="wire"/>
+  <circle cx="520" cy="478" r="6" class="node"/>
+  <text x="548" y="335" class="label">RC1</text>
+  <text x="548" y="357" class="value">120 kohm</text>
+  <text x="548" y="379" class="small">vdd - b1_collector</text>
+  <text x="540" y="482" class="small">b1_collector</text>
+
+  <circle cx="435" cy="548" r="34" class="dev"/>
+  <line x1="404" y1="548" x2="370" y2="548" class="wire"/>
+  <line x1="370" y1="548" x2="335" y2="360" class="wire"/>
+  <line x1="435" y1="514" x2="520" y2="478" class="wire"/>
+  <line x1="435" y1="582" x2="435" y2="654" class="wire"/>
+  <line x1="410" y1="565" x2="460" y2="532" class="dev"/>
+  <polygon points="450,536 462,529 459,543" fill="#111817"/>
+  <polyline points="435,654 415,668 455,694 415,720 455,746 415,772 435,786" class="dev"/>
+  <line x1="435" y1="786" x2="435" y2="884" class="wire"/>
+  <text x="466" y="548" class="label">XQ1</text>
+  <text x="466" y="571" class="value">sky130_fd_pr__npn_05v5</text>
+  <text x="466" y="592" class="small">pins C B E S: b1_collector b1_base b1_emitter 0</text>
+  <text x="466" y="704" class="label">RE1</text>
+  <text x="466" y="726" class="value">3.9 kohm</text>
+  <text x="466" y="748" class="small">b1_emitter - 0</text>
+  <text x="454" y="650" class="small">b1_emitter</text>
+
+  <line x1="548" y1="478" x2="600" y2="478" class="wire"/>
+  <line x1="600" y1="436" x2="600" y2="520" class="cap"/>
+  <line x1="630" y1="436" x2="630" y2="520" class="cap"/>
+  <line x1="630" y1="478" x2="630" y2="884" class="wire"/>
+  <text x="582" y="421" class="label">CH1</text>
+  <text x="578" y="546" class="value">22 pF</text>
+  <text x="574" y="566" class="tiny">b1_collector - 0</text>
+
+  <!-- Interstage coupling -->
+  <line x1="520" y1="478" x2="690" y2="478" class="wire"/>
+  <line x1="705" y1="436" x2="705" y2="520" class="cap"/>
+  <line x1="737" y1="436" x2="737" y2="520" class="cap"/>
+  <line x1="737" y1="478" x2="920" y2="478" class="wire arrow"/>
+  <text x="688" y="421" class="label">C12</text>
+  <text x="688" y="546" class="value">68 nF</text>
+  <text x="668" y="566" class="tiny">b1_collector - b2_base</text>
+
+  <!-- Stage 2 bias divider -->
+  <line x1="920" y1="252" x2="920" y2="294" class="wire"/>
+  <polyline points="920,294 900,308 940,334 900,360 940,386 900,412 920,426" class="dev"/>
+  <line x1="920" y1="426" x2="920" y2="486" class="wire"/>
+  <polyline points="920,486 900,500 940,526 900,552 940,578 900,604 920,618" class="dev"/>
+  <line x1="920" y1="618" x2="920" y2="884" class="wire"/>
+  <circle cx="920" cy="478" r="6" class="node"/>
+  <text x="950" y="335" class="label">RB2_TOP</text>
+  <text x="950" y="357" class="value">4.7 Mohm</text>
+  <text x="950" y="379" class="small">vdd - b2_base</text>
+  <text x="950" y="540" class="label">RB2_BOT</text>
+  <text x="950" y="562" class="value">1 Mohm</text>
+  <text x="950" y="584" class="small">b2_base - 0</text>
+  <text x="940" y="482" class="small">b2_base</text>
+
+  <!-- Stage 2 transistor and loads -->
+  <line x1="1104" y1="252" x2="1104" y2="294" class="wire"/>
+  <polyline points="1104,294 1084,308 1124,334 1084,360 1124,386 1084,412 1104,426" class="dev"/>
+  <line x1="1104" y1="426" x2="1104" y2="478" class="wire"/>
+  <circle cx="1104" cy="478" r="6" class="node"/>
+  <text x="1132" y="335" class="label">RC2</text>
+  <text x="1132" y="357" class="value">120 kohm</text>
+  <text x="1132" y="379" class="small">vdd - b2_collector</text>
+  <text x="1124" y="482" class="small">b2_collector</text>
+
+  <circle cx="1018" cy="548" r="34" class="dev"/>
+  <line x1="984" y1="548" x2="950" y2="548" class="wire"/>
+  <line x1="950" y1="548" x2="920" y2="478" class="wire"/>
+  <line x1="1018" y1="514" x2="1104" y2="478" class="wire"/>
+  <line x1="1018" y1="582" x2="1018" y2="654" class="wire"/>
+  <line x1="993" y1="565" x2="1043" y2="532" class="dev"/>
+  <polygon points="1033,536 1045,529 1042,543" fill="#111817"/>
+  <polyline points="1018,654 998,668 1038,694 998,720 1038,746 998,772 1018,786" class="dev"/>
+  <line x1="1018" y1="786" x2="1018" y2="884" class="wire"/>
+  <text x="1049" y="548" class="label">XQ2</text>
+  <text x="1049" y="571" class="value">sky130_fd_pr__npn_05v5</text>
+  <text x="1049" y="592" class="small">pins C B E S: b2_collector b2_base b2_emitter 0</text>
+  <text x="1049" y="704" class="label">RE2</text>
+  <text x="1049" y="726" class="value">3.9 kohm</text>
+  <text x="1049" y="748" class="small">b2_emitter - 0</text>
+
+  <line x1="1132" y1="478" x2="1184" y2="478" class="wire"/>
+  <line x1="1184" y1="436" x2="1184" y2="520" class="cap"/>
+  <line x1="1214" y1="436" x2="1214" y2="520" class="cap"/>
+  <line x1="1214" y1="478" x2="1214" y2="884" class="wire"/>
+  <text x="1166" y="421" class="label">CH2</text>
+  <text x="1162" y="546" class="value">22 pF</text>
+  <text x="1158" y="566" class="tiny">b2_collector - 0</text>
+
+  <!-- Output coupling and rebias -->
+  <line x1="1104" y1="478" x2="1290" y2="478" class="wire"/>
+  <line x1="1306" y1="436" x2="1306" y2="520" class="cap"/>
+  <line x1="1338" y1="436" x2="1338" y2="520" class="cap"/>
+  <line x1="1338" y1="478" x2="1418" y2="478" class="wire arrow"/>
+  <text x="1286" y="421" class="label">COUT</text>
+  <text x="1288" y="546" class="value">10 nF</text>
+  <text x="1268" y="566" class="tiny">b2_collector - vout_drv</text>
+
+  <line x1="1418" y1="252" x2="1418" y2="294" class="wire"/>
+  <polyline points="1418,294 1398,308 1438,334 1398,360 1438,386 1398,412 1418,426" class="dev"/>
+  <line x1="1418" y1="426" x2="1418" y2="536" class="wire"/>
+  <polyline points="1418,536 1398,550 1438,576 1398,602 1438,628 1398,654 1418,668" class="dev"/>
+  <line x1="1418" y1="668" x2="1418" y2="884" class="wire"/>
+  <circle cx="1418" cy="478" r="6" class="node"/>
+  <text x="1446" y="335" class="label">ROUT_TOP</text>
+  <text x="1446" y="357" class="value">10 Mohm</text>
+  <text x="1446" y="379" class="small">vdd - vout_drv</text>
+  <text x="1446" y="592" class="label">ROUT_BOT</text>
+  <text x="1446" y="614" class="value">10 Mohm</text>
+  <text x="1446" y="636" class="small">vout_drv - 0</text>
+  <text x="1438" y="482" class="small">vout_drv</text>
+
+  <!-- Ideal buffer -->
+  <line x1="1418" y1="478" x2="1532" y2="478" class="wire"/>
+  <polygon points="1532,426 1532,530 1618,478" class="dev"/>
+  <text x="1546" y="470" class="label">EBUF</text>
+  <text x="1546" y="492" class="value">VCVS gain=1</text>
+  <text x="1510" y="554" class="tiny">vop_ideal 0 vout_drv 0</text>
+  <line x1="1618" y1="478" x2="1662" y2="478" class="wire"/>
+  <circle cx="1622" cy="478" r="5" class="node"/>
+  <text x="1612" y="455" class="small">vop_ideal</text>
+
+  <polyline points="1662,478 1676,458 1702,498 1728,458 1754,498 1780,458 1794,478" class="dev"/>
+  <line x1="1794" y1="478" x2="1820" y2="478" class="wire"/>
+  <text x="1680" y="434" class="label">ROPAMP</text>
+  <text x="1688" y="525" class="value">1 kohm</text>
+  <circle cx="1820" cy="478" r="6" class="node"/>
+  <text x="1812" y="455" class="small">vbuf</text>
+
+  <line x1="1820" y1="478" x2="1820" y2="600" class="wire"/>
+  <line x1="1780" y1="600" x2="1860" y2="600" class="cap"/>
+  <line x1="1780" y1="630" x2="1860" y2="630" class="cap"/>
+  <line x1="1820" y1="630" x2="1820" y2="884" class="wire"/>
+  <text x="1728" y="608" class="label">COPAMP</text>
+  <text x="1728" y="632" class="value">636.62 pF</text>
+  <text x="1728" y="652" class="tiny">OPAMP_FT=250 kHz</text>
+
+  <circle cx="1518" cy="752" r="30" class="src"/>
+  <line x1="1518" y1="252" x2="1518" y2="722" class="wire"/>
+  <line x1="1518" y1="782" x2="1518" y2="884" class="wire"/>
+  <text x="1558" y="745" class="label">IOPAMP</text>
+  <text x="1558" y="767" class="value">1.75 uA</text>
+  <text x="1558" y="789" class="small">vdd - 0</text>
+
+  <!-- Output filter and load -->
+  <line x1="1820" y1="478" x2="1886" y2="478" class="wire"/>
+  <polyline points="1886,478 1900,458 1926,498 1952,458 1978,498 2004,458 2018,478" class="dev"/>
+  <line x1="2018" y1="478" x2="2070" y2="478" class="wire"/>
+  <circle cx="2070" cy="478" r="6" class="node"/>
+  <text x="1906" y="434" class="label">RBUF1</text>
+  <text x="1910" y="525" class="value">10 kohm</text>
+  <text x="2050" y="455" class="small">vfilt1</text>
+
+  <line x1="2070" y1="478" x2="2070" y2="600" class="wire"/>
+  <line x1="2030" y1="600" x2="2110" y2="600" class="cap"/>
+  <line x1="2030" y1="630" x2="2110" y2="630" class="cap"/>
+  <line x1="2070" y1="630" x2="2070" y2="884" class="wire"/>
+  <text x="1980" y="608" class="label">CBUF1</text>
+  <text x="1980" y="632" class="value">220 pF</text>
+
+  <line x1="2070" y1="478" x2="2136" y2="478" class="wire"/>
+  <polyline points="2136,478 2150,458 2176,498 2202,458 2228,498 2254,458 2268,478" class="dev"/>
+  <line x1="2268" y1="478" x2="2328" y2="478" class="wire"/>
+  <circle cx="2328" cy="478" r="6" class="node"/>
+  <text x="2156" y="434" class="label">RBUF2</text>
+  <text x="2160" y="525" class="value">10 kohm</text>
+  <text x="2290" y="455" class="small">vout_final</text>
+
+  <line x1="2328" y1="478" x2="2328" y2="600" class="wire"/>
+  <line x1="2288" y1="600" x2="2368" y2="600" class="cap"/>
+  <line x1="2288" y1="630" x2="2368" y2="630" class="cap"/>
+  <line x1="2328" y1="630" x2="2328" y2="884" class="wire"/>
+  <text x="2378" y="608" class="label">CBUF2</text>
+  <text x="2378" y="632" class="value">220 pF</text>
+
+  <line x1="2328" y1="478" x2="2440" y2="478" class="wire arrow"/>
+  <line x1="2440" y1="438" x2="2440" y2="518" class="cap"/>
+  <line x1="2470" y1="438" x2="2470" y2="518" class="cap"/>
+  <line x1="2470" y1="478" x2="2470" y2="884" class="wire"/>
+  <text x="2408" y="421" class="label">CLOAD_10P</text>
+  <text x="2420" y="546" class="value">10 pF</text>
+  <text x="2402" y="566" class="tiny">external load, PPA excluded</text>
+
+  <!-- Global parameter panel -->
+  <rect x="60" y="1000" width="700" height="302" class="panel"/>
+  <rect x="60" y="1000" width="700" height="38" class="tableHead"/>
+  <text x="82" y="1025" class="section">Global parameters and exact values</text>
+  <text x="82" y="1064" class="mono">VDD=5 V, VCM=2.5 V, VIN AC=1 V</text>
+  <text x="82" y="1088" class="mono">RB_TOP=4.7Meg, RB_BOT=1Meg, RCVAL=120k, REVAL=3.9k</text>
+  <text x="82" y="1112" class="mono">CCPL=68n, COUT=10n, CH=22p</text>
+  <text x="82" y="1136" class="mono">ROUT=10Meg, RBUF=10k, CBUF=220p</text>
+  <text x="82" y="1160" class="mono">OPAMP_FT=250k, ROPAMP=1k</text>
+  <text x="82" y="1184" class="mono">IOPAMP=OPAMP_FT*7e-12=1.75uA</text>
+  <text x="82" y="1208" class="mono">COPAMP=1/(2*pi*ROPAMP*OPAMP_FT)=636.62pF</text>
+  <text x="82" y="1244" class="value">Signal path: vin - CIN - b1_base - Q1 - b1_collector - C12 - b2_base - Q2 - b2_collector - COUT - vout_drv - EBUF - vbuf - vfilt1 - vout_final</text>
+  <text x="82" y="1274" class="small">Use the node labels exactly when recreating the schematic in Cadence to simplify netlist comparison.</text>
+
+  <!-- Cadence mapping panel -->
+  <rect x="790" y="1000" width="740" height="302" class="cadence"/>
+  <text x="812" y="1025" class="section">Cadence implementation mapping</text>
+  <text x="812" y="1062" class="mono">XQ1/XQ2: sky130_fd_pr_main/npn_05v5, W=1.00, L=1.00, mult=1</text>
+  <text x="812" y="1086" class="mono">BJT pin order in netlist: collector, base, emitter, substrate</text>
+  <text x="812" y="1110" class="mono">Resistors: sky130_fd_pr_main/res_high_po_5p73</text>
+  <text x="812" y="1134" class="mono">Caps: sky130_fd_pr_main/cap_vpp_11p5x11p7_m1m4_noshield</text>
+  <text x="812" y="1158" class="mono">EBUF: ideal unity VCVS, or ahdlLib/opamp configured as follower</text>
+  <text x="812" y="1182" class="mono">ROPAMP/COPAMP implement buffer output pole; IOPAMP models buffer power</text>
+  <text x="812" y="1206" class="mono">CLOAD_10P is an external test load and is not part of amplifier PPA area</text>
+  <text x="812" y="1242" class="small">Model includes: tt/nonfet.spice and npn_05v5/sky130_fd_pr__npn_05v5__t.corner.spice</text>
+  <text x="812" y="1272" class="small">For schematic-vs-netlist checking, preserve instance names shown in the drawing.</text>
+
+  <!-- Performance panel -->
+  <rect x="1560" y="1000" width="980" height="302" class="panel"/>
+  <rect x="1560" y="1000" width="980" height="38" class="tableHead"/>
+  <text x="1582" y="1025" class="section">Current accepted performance summary</text>
+  <text x="1582" y="1064" class="mono">Midband gain @ 1 kHz: 39.760102 dB, about 97.2 V/V</text>
+  <text x="1582" y="1088" class="mono">Lower cutoff: 12.569950 Hz; upper cutoff: 20409.380253 Hz</text>
+  <text x="1582" y="1112" class="mono">10 Hz relative loss: 4.396560 dB; 20 kHz relative loss: about 2.90 dB</text>
+  <text x="1582" y="1136" class="mono">Low-frequency slope 1 Hz to 10 Hz: +40.9971 dB/dec</text>
+  <text x="1582" y="1160" class="mono">High-frequency slope 100 kHz to 1 MHz: -80.5594 dB/dec</text>
+  <text x="1582" y="1184" class="mono">AC nRMSE=0.136319434501, transient nRMSE=0.023733677809</text>
+  <text x="1582" y="1208" class="mono">1 mV input transient output: 194.14 mVpp; output CM: 2.498256 V</text>
+  <text x="1582" y="1232" class="mono">Worst power: 65.1724334 uW; area: 1.820824e8 p</text>
+  <text x="1582" y="1268" class="small">Performance source: results/ngspice/tables/bjt2_performance_summary.csv and bjt2_ppa_sweep_summary.csv</text>
+
+  <!-- Netlist transfer panel -->
+  <rect x="60" y="1330" width="1220" height="310" class="panel"/>
+  <rect x="60" y="1330" width="1220" height="38" class="tableHead"/>
+  <text x="82" y="1355" class="section">Cadence netlist transfer block</text>
+  <text x="82" y="1390" class="monoSmall">VDD vdd 0 5</text>
+  <text x="82" y="1410" class="monoSmall">VIN vin 0 DC 2.5 AC 1</text>
+  <text x="82" y="1430" class="monoSmall">CIN vin b1_base 68n</text>
+  <text x="82" y="1450" class="monoSmall">RB1_TOP vdd b1_base 4.7Meg    RB1_BOT b1_base 0 1Meg</text>
+  <text x="82" y="1470" class="monoSmall">RC1 vdd b1_collector 120k     RE1 b1_emitter 0 3.9k</text>
+  <text x="82" y="1490" class="monoSmall">XQ1 b1_collector b1_base b1_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1</text>
+  <text x="82" y="1510" class="monoSmall">CH1 b1_collector 0 22p        C12 b1_collector b2_base 68n</text>
+  <text x="82" y="1530" class="monoSmall">RB2_TOP vdd b2_base 4.7Meg    RB2_BOT b2_base 0 1Meg</text>
+  <text x="82" y="1550" class="monoSmall">RC2 vdd b2_collector 120k     RE2 b2_emitter 0 3.9k</text>
+  <text x="82" y="1570" class="monoSmall">XQ2 b2_collector b2_base b2_emitter 0 sky130_fd_pr__npn_05v5_W1p00L1p00 mult=1</text>
+  <text x="82" y="1590" class="monoSmall">CH2 b2_collector 0 22p        COUT b2_collector vout_drv 10n</text>
+  <text x="82" y="1610" class="monoSmall">ROUT_TOP vdd vout_drv 10Meg   ROUT_BOT vout_drv 0 10Meg</text>
+
+  <rect x="1320" y="1330" width="1220" height="310" class="panel"/>
+  <rect x="1320" y="1330" width="1220" height="38" class="tableHead"/>
+  <text x="1342" y="1355" class="section">Output buffer, filter, and PPA geometry notes</text>
+  <text x="1342" y="1390" class="monoSmall">EBUF vop_ideal 0 vout_drv 0 1</text>
+  <text x="1342" y="1410" class="monoSmall">ROPAMP vop_ideal vbuf 1k      COPAMP vbuf 0 636.62p</text>
+  <text x="1342" y="1430" class="monoSmall">IOPAMP vdd 0 1.75u            RBUF1 vbuf vfilt1 10k</text>
+  <text x="1342" y="1450" class="monoSmall">CBUF1 vfilt1 0 220p           RBUF2 vfilt1 vout_final 10k</text>
+  <text x="1342" y="1470" class="monoSmall">CBUF2 vout_final 0 220p       CLOAD_10P vout_final 0 10p</text>
+  <text x="1342" y="1502" class="monoSmall">res_high_po_5p73: RC l=2124.193um, RE l=67.870um, RB_TOP l=83243.570um</text>
+  <text x="1342" y="1522" class="monoSmall">res_high_po_5p73: RB_BOT l=17710.449um, ROUT l=177115.337um, RBUF l=175.911um</text>
+  <text x="1342" y="1542" class="monoSmall">cap_vpp 11.5um x 11.7um: 68n mult=617115.891, 10n mult=90752.337</text>
+  <text x="1342" y="1562" class="monoSmall">cap_vpp 11.5um x 11.7um: 22p mult=199.655, 220p mult=1996.551, 10p mult=90.752</text>
+  <text x="1342" y="1594" class="small">Dominant area: CIN + C12 = 1.66065886e8 p. External CLOAD_10P area is excluded.</text>
+  <text x="1342" y="1620" class="small">Area source: results/ngspice/tables/bjt2_area_calculation.csv</text>
+</svg>

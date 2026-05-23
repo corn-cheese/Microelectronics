@@ -1,0 +1,33 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * sky130 bjt 2-stage ppa sweep ac: ce1 -> ce2 -> output rebias -> ideal opamp follower -> two rc poles
+
+Warning: Model issue on line 28 :
+  .model xq1:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Warning: Model issue on line 28 :
+  .model xq2:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+
+No. of Data Rows : 1
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+
+No. of Data Rows : 721
+midgain_vv          =  1.00720e+02
+midgain_db          =  4.00623e+01
+phase_1k_deg        =  -6.23739e-02
+ASCII raw file "D:/Codex/Support/Microelectronics-2stage-autotopo-ppa/results/ngspice/raw/bjt2_autotopo_cpsr_rc125k_re4p05k_rb4p7m_cin68n_c12_68n_cout10n_ch26p_r11k_c180p_ft175k_ac.raw"
+ngspice-46 done

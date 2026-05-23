@@ -1,0 +1,6 @@
+# Generated ngspice bulk outputs
+results/ngspice/raw/
+results/ngspice/raw_tmp/
+results/ngspice/csv/
+results/ngspice/csv_tmp/
+

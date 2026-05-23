@@ -1,0 +1,58 @@
+
+Note: No compatibility mode selected!
+
+
+Circuit: * sky130 bjt 2-stage ppa sweep tran: ce1 -> ce2 -> output rebias -> ideal opamp follower -> two rc poles
+
+Warning: Model issue on line 28 :
+  .model xq1:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Warning: Model issue on line 28 :
+  .model xq2:sky130_fd_pr__npn_05v5_w1p00l1p00__model npn level=1.0 tref=3 ...
+unrecognized parameter (dcap) - ignored
+unrecognized parameter (gap1) - ignored
+unrecognized parameter (gap2) - ignored
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+
+No. of Data Rows : 1
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using KLU as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                          5
+vin                                        2.5
+b1_base                               0.776896
+b1_collector                           4.44618
+b1_emitter                           0.0184734
+b2_base                               0.776896
+b2_collector                           4.44618
+b2_emitter                           0.0184734
+vhp_mid                                    2.5
+vout_drv                                   2.5
+vop_ideal                                  2.5
+vbuf                                       2.5
+vfilt1                                     2.5
+vout_final                                 2.5
+ebuf#branch                        4.33681e-19
+vin#branch                                   0
+vdd#branch                         -1.3194e-05
+
+
+No. of Data Rows : 20008
+out_max             =  2.59409e+00 at=  5.02564e-02
+out_min             =  2.40290e+00 at=  9.97564e-02
+vin_max             =  2.50100e+00 at=  6.92514e-02
+vin_min             =  2.49900e+00 at=  6.97514e-02
+ASCII raw file "D:/Codex/Support/Microelectronics-2stage-autotopo-ppa/results/ngspice/raw/bjt2_autotopo_aos_rc120k_re3p9k_rb4p7m_c68n_cout16p8n_cout24p7n_rhp15m_rout10m_ch24p_r12k_c180p_ft250k_tran.raw"
+ngspice-46 done

@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 const runnerPaths = [
   "maxrun/run_hf4pole_sweep.mjs",
   "maxrun/run_hfiso_sweep.mjs",
+  "maxrun/run_bjt2_ppa_sweep.mjs",
 ];
 
 for (const runnerPath of runnerPaths) {
